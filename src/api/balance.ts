@@ -8,7 +8,16 @@ const getAddressBalance = async ({ address }: GetAddressBalanceInput) => {
     op: "getaddrbalance",
     params: [{ name: "addr", value: address }],
   };
-  const response = await axios.post(url, data);
+
+  const config = {
+    method: 'get',
+    url: url,
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    data: data
+};
+  const response = await axios(config);
   console.dir(response.data, { depth: null });
   return {
     ngnBalance: response.data.bal_naira,
