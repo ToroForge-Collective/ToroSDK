@@ -1,4 +1,5 @@
 export type CreateWalletInput = {
+  username: string;
   password: string;
 };
 

@@ -1,15 +1,20 @@
-import { createKeystore, setName } from "../api/index";
+import { createKeystore, setName, isNameUsed } from "../api/index";
 import { CreateKeystoreInput, SetNameInput } from "../types/api";
 import { CreateWalletInput } from "../types/service";
 
-const createWallet = async ({ password }: CreateWalletInput) => {
-  if (!password) {
-    throw new Error("Password is required");
+const createWallet = async ({ password, username }: CreateWalletInput) => {
+  if (!password || !username) {
+    throw new Error("Username and Password is required");
   }
   const keystoreInput: CreateKeystoreInput = {
     password: password,
   };
+  const isTNSUsed = await isNameUsed(username);
+  if (isTNSUsed) {
+    throw new Error("Username is already taken");
+  }
   const address = await createKeystore(keystoreInput);
+  await configureTNS({ address, password, username });
 
   return address;
 };
@@ -22,7 +27,7 @@ const configureTNS = async ({ address, password, username }: SetNameInput) => {
   const setNameInput: SetNameInput = {
     address: address,
     password: password,
-    username: `${username}Toro`,
+    username: username,
   };
   await setName(setNameInput);
 };
