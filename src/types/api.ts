@@ -19,3 +19,11 @@ export type GetAddressBalanceInput = {
   address: string;
 };
 
+export type InitializeDepositInput = {
+  usrAddr: string;
+  username: string;
+  amount: string;
+  currency: string;
+  admin: string;
+  adminpwd: string;
+}

@@ -1,8 +1,11 @@
+Here’s the **updated `README.md`** with the **deposit feature** added:
+
+```markdown
 # Toronet SDK
 
 ## Overview
 
-The Toronet SDK is a powerful TypeScript library for developers to interact with the Toronet blockchain. It provides tools for wallet management and token balance queries, simplifying blockchain development while ensuring type safety and reliability.
+The Toronet SDK is a powerful TypeScript library for developers to interact with the Toronet blockchain. It provides tools for wallet management, token balance queries, and fiat deposit integration, simplifying blockchain development while ensuring type safety and reliability.
 
 ---
 
@@ -12,6 +15,8 @@ The Toronet SDK is a powerful TypeScript library for developers to interact with
   - Create wallets and set Toronet Naming System (TNS) names.
 - **Token Balance Queries**
   - Retrieve balances for NGN, USD, and ToroG tokens.
+- **Fiat Deposits**
+  - Initialize and verify fiat deposits using whitelisted project credentials.
 
 ---
 
@@ -49,19 +54,41 @@ import { getBalance } from "torosdk";
 })();
 ```
 
----
+### 3. Deposit Fiat (NGN/USD)
 
-### 3. Configure TNS
+**🔹 Before using the deposit feature,** you must **register as a project** at [https://payments.connectw.com/](https://payments.connectw.com/) to get **admin credentials**.
 
 ```typescript
-import { configureTNS } from "torosdk";
+import { depositFunds, confirmDeposit, Currency } from "torosdk";
 
 (async () => {
-  await configureTNS({
-    address: address,
-    password: "password",
-    username: "username",
-  });
+  const userAddress = "0x123456789abcdef";
+  const username = "torouser";
+  const amount = "5000";
+  const currency = Currency.Dollar;
+
+  // Admin credentials from https://payments.connectw.com/
+  const admin = "your-whitelisted-address";
+  const adminpwd = "your-password";
+
+  // Step 1: Initialize Deposit
+  const depositDetails = await depositFunds(
+    userAddress,
+    username,
+    amount,
+    currency,
+    admin,
+    adminpwd
+  );
+
+  console.log("Transfer details:", depositDetails);
+
+  // Step 2: (After transfer) Verify Deposit
+  //depositDetails.accountnumber is your transactionId if currency is NGN
+  const transactionId = "1234567890abcd"; // TXID from the bank transfer
+  const isDepositConfirmed = await confirmDeposit(currency, transactionId);
+
+  console.log("Deposit Success:", isDepositConfirmed);
 })();
 ```
 
@@ -74,11 +101,13 @@ src/
 ├── api/                # API abstraction layer
 │   ├── account.ts      # Wallet and TNS APIs
 │   ├── balance.ts      # Balance query APIs
+│   ├── payments.ts     # Deposit and verification APIs
 │   └── config.ts       # API configuration
 │
 ├── services/           # Business logic layer
 │   ├── walletService.ts
 │   ├── balanceService.ts
+│   ├── paymentService.ts
 │   └── utils.ts        # Utility functions
 │
 ├── index.ts            # Main SDK entry point
@@ -104,4 +133,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Support
 
-For questions or support, please join our [Discord community](#).
+For questions or support, please join our [Discord community](https://discord.gg/45SMNdGx5d).
+
