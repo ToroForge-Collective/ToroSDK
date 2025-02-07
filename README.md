@@ -1,4 +1,3 @@
-Here’s the **updated `README.md`** with the **deposit feature** added:
 
 ```markdown
 # Toronet SDK
