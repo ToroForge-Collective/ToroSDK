@@ -1,5 +1,9 @@
 export enum Currency {
     Naira = "NGN",
-    // ToroG = "TOROG",
+    Euro = "EUR",
     Dollar = "USD",
+    Pound = "GBP",
+    Kenyan_Shilling = "KSH",
+   // Egyptian_Pound = "EGP",
+    South_African_Rand = "ZAR",
 }
