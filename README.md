@@ -1,10 +1,12 @@
 
+---
+
 ```markdown
 # Toronet SDK
 
 ## Overview
 
-The Toronet SDK is a powerful TypeScript library for developers to interact with the Toronet blockchain. It provides tools for wallet management, token balance queries, KYC verification, and fiat deposit integration, simplifying blockchain development while ensuring type safety and reliability.
+The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet blockchain. It empowers developers to manage wallets, query blockchain data, handle fiat transactions, verify user identity, and more — all from a developer-friendly interface.
 
 ---
 
@@ -12,14 +14,27 @@ The Toronet SDK is a powerful TypeScript library for developers to interact with
 
 - **Wallet Management**
   - Create wallets and set Toronet Naming System (TNS) names.
+  - Import wallet using private key and password.
+  - Verify wallet password integrity.
+
+- **Blockchain Queries**
+  - Get latest block data.
+  - Retrieve blockchain status.
+  - Fetch historical blocks and transactions.
+
 - **Token Balance Queries**
   - Retrieve balances for NGN, USD, KSH, and ToroG tokens.
+
 - **Fiat Deposits (Multi-Currency)**
   - Initialize and verify fiat deposits using whitelisted project credentials.
   - Supported currencies: NGN, EUR, USD, GBP, KSH, ZAR.
+
 - **KYC Verification**
-  - Perform identity verification for users.
+  - Perform identity verification.
   - Check if a wallet address is KYC verified.
+
+- **Exchange Rate Queries**
+  - Fetch exchange rates for supported fiat and crypto assets.
 
 ---
 
@@ -27,52 +42,100 @@ The Toronet SDK is a powerful TypeScript library for developers to interact with
 
 ```bash
 npm install torosdk
-
 ```
 
-----------
+---
 
 ## Usage
 
-### **1️⃣ Create a Wallet**
+### 🔐 Create a Wallet
 
 ```typescript
 import { createWallet } from "torosdk";
 
-(async () => {
-  const walletAddress = await createWallet({ password: "securePassword123" });
-  console.log("Wallet Address:", walletAddress);
-})();
-
+const walletAddress = await createWallet({
+  password: "securePassword123"
+});
+console.log("Wallet Address:", walletAddress);
 ```
 
-----------
+---
 
-### **2️⃣ Get Token Balances**
+### 🔑 Import Wallet from Private Key
+
+```typescript
+import { importWalletFromPrivateKeyAndPassword } from "torosdk";
+
+const address = await importWalletFromPrivateKeyAndPassword({
+  pvkey: "yourPrivateKeyHere",
+  password: "yourPasswordHere"
+});
+console.log("Imported Wallet Address:", address);
+```
+
+---
+
+### 🔒 Verify Wallet Password
+
+```typescript
+import { verifyWalletPassword } from "torosdk";
+
+const isValid = await verifyWalletPassword({
+  address: "0xYourAddress",
+  password: "yourPassword"
+});
+console.log("Password is correct:", isValid);
+```
+
+---
+
+### 📦 Get Wallet Key
+
+```typescript
+import { getWalletKey } from "torosdk";
+
+const key = await getWalletKey({
+  address: "0xYourWalletAddress"
+});
+console.log("Wallet Key:", key);
+```
+
+---
+
+### 📊 Blockchain Status & Latest Block
+
+```typescript
+import { getBlockchainStatus, getLatestBlockData } from "torosdk";
+
+const status = await getBlockchainStatus();
+console.log("Blockchain Status:", status);
+
+const block = await getLatestBlockData();
+console.log("Latest Block:", block);
+```
+
+---
+
+### 💰 Get Token Balances
 
 ```typescript
 import { getBalance } from "torosdk";
 
-(async () => {
-  const address = "0x46bbe1dab243c3c889e491b92fe0337b57deba97";
-
-  const balances = await getBalance({ address: address });
-  console.log("Balances:", balances);
-})();
-
+const balances = await getBalance({
+  address: "0xYourWalletAddress"
+});
+console.log("Token Balances:", balances);
 ```
 
-----------
+---
 
-### **3️⃣ Perform KYC Verification**
-
+### 🧾 KYC Verification
 **🔹 Before using this feature,** ensure that you have the correct admin credentials.  
 KYC is required for transactions.
-
 ```typescript
-import { performKYCForCustomer, isAddressKYCVerified, KYCParams } from "torosdk";
+import { performKYCForCustomer, isAddressKYCVerified } from "torosdk";
 
-const kycparams: KYCParams = {
+const kycparams = {
   firstName: "John",
   middleName: "Doe",
   lastName: "Doe",
@@ -80,122 +143,129 @@ const kycparams: KYCParams = {
   currency: "NGN",
   phoneNumber: "08012345678",
   dob: "1990-01-01",
-  address: "0x8d05f2be776279b231a3607464fa72589ba99337", // user's wallet address
-  admin: "adminAddr",  // Whitelisted project credentials
-  adminpwd: "@adminPassword",
+  address: "0xYourWalletAddress",
+  admin: "yourWhitelistedAdminAddress",
+  adminpwd: "yourAdminPassword",
 };
 
 const isKYCSuccessful = await performKYCForCustomer(kycparams);
-console.log("KYC Response:", isKYCSuccessful);
+console.log("KYC Successful:", isKYCSuccessful);
 
-// Check if the wallet address is KYC verified
-const isAddressVerified = await isAddressKYCVerified({
-  address: "0x8d05f2be776279b231a3607464fa72589ba99337",
+const isVerified = await isAddressKYCVerified({
+  address: "0xYourWalletAddress"
 });
-console.log("Address Verification:", isAddressVerified);
-
+console.log("KYC Verified:", isVerified);
 ```
 
-----------
+---
 
-### **4️⃣ Deposit Fiat (Multi-Currency)**
-
+### 💸 Fiat Deposit (Multi-Currency)
 **🔹 Before using this feature,** you must **register as a project** at [https://payments.connectw.com/](https://payments.connectw.com/) to get **admin credentials**.
 
 ```typescript
-import { depositFunds, Currency } from "torosdk";
+import { depositFunds } from "torosdk";
+import { Currency } from "torosdk/types";
 
-const address = "0x8d05f2be776279b231a3607464fa72589ba99337";
-const username = "testUsername";
-const amount = "1000";
-const currency = Currency.Kenyan_Shilling; // KSH
-
-// Step 1: Initialize Deposit
 const depositDetails = await depositFunds({
-  userAddress: address,
-  username,
-  amount,
-  currency,
-  admin: "adminAddr",  // Whitelisted project credentials
-  adminpwd: "@adminPassword",
+  userAddress: "0xYourWalletAddress",
+  username: "testUser",
+  amount: "1000",
+  currency: Currency.Kenyan_Shilling,
+  admin: "adminAddr",
+  adminpwd: "@adminPassword"
 });
-
-console.log("Deposit Details:", depositDetails);
-
+console.log("Deposit Info:", depositDetails);
 ```
 
-----------
+---
 
-### **Supported Currencies for Deposits**
+### 🔁 Blockchain Queries
 
-The SDK now supports multiple fiat currencies:
+```typescript
+import { getSupportedAssetsExchangeRates, getBlocksData, getBlockchainTransactions } from "torosdk";
+
+// Exchange rates
+const rates = await getSupportedAssetsExchangeRates();
+console.log("Exchange Rates:", rates);
+
+// Get blocks
+const blocks = await getBlocksData(5); // last 5 blocks
+console.log("Blocks:", blocks);
+
+// Get transactions
+const txs = await getBlockchainTransactions(10);
+console.log("Transactions:", txs);
+```
+
+---
+
+## Supported Currencies
 
 ```typescript
 export enum Currency {
-    Naira = "NGN",
-    Euro = "EUR",
-    Dollar = "USD",
-    Pound = "GBP",
-    Kenyan_Shilling = "KSH",
-    South_African_Rand = "ZAR",
+  Naira = "NGN",
+  Euro = "EUR",
+  Dollar = "USD",
+  Pound = "GBP",
+  Kenyan_Shilling = "KSH",
+  South_African_Rand = "ZAR",
 }
-
 ```
 
-----------
+---
 
 ## Folder Structure
 
 ```plaintext
 src/
-├── api/                # API abstraction layer
-│   ├── account.ts      # Wallet and TNS APIs
-│   ├── balance.ts      # Balance query APIs
-│   ├── payments.ts     # Deposit and verification APIs
-│   └── config.ts       # API configuration
+├── api/                
+│   ├── account.ts           
+│   ├── balance.ts           
+│   ├── blockchain.ts        
+│   ├── keystore.ts          
+│   ├── payments.ts          
+│   ├── kyc.ts               
+│   └── config.ts            
 │
-├── services/           # Business logic layer
-│   ├── walletService.ts
-│   ├── balanceService.ts
-│   ├── paymentService.ts
-│   ├── kycService.ts
-│   └── utils.ts        # Utility functions
+├── query/                  # On-chain data queries
+│   └── queries.ts          
 │
-├── index.ts            # Main SDK entry point
-
-```
-
-----------
-
-## Contribution
-
-We welcome contributions from the community! To contribute:
-
-1.  Fork the repository.
-2.  Create a new branch for your feature or bug fix.
-3.  Submit a pull request with a detailed explanation.
-
-----------
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-----------
-
-## Support
-
-For questions or support, please join our [Discord community](https://discord.gg/45SMNdGx5d).
-
+├── services/               # Business logic
+│   ├── walletService.ts    
+│   ├── balanceService.ts   
+│   ├── paymentService.ts   
+│   ├── kycService.ts       
+│   ├── blockchainService.ts
+│   └── utils.ts            
+│
+├── types/                  # Global types and enums
+├── utils/                 
+├── index.ts                # SDK entry
 ```
 
 ---
 
-### **🔹 What’s New?**
-✅ **Added KYC Verification Instructions**  
-✅ **Included Multi-Currency Deposits with `Currency` Enum**  
-✅ **Provided Clear Example Usage for Both Features**  
+## Contribution
 
-This is now fully formatted for **GitHub markdown**. Let me know if you'd like any further refinements or additional documentation sections! 🚀😊
+We welcome contributions from the community!
 
+1. Fork the repo
+2. Create a feature branch
+3. Submit a PR with detailed explanation
+
+---
+
+## License
+
+MIT License – see LICENSE file.
+
+---
+
+## Support
+
+Join our developer community on [Discord](https://discord.gg/45SMNdGx5d).
 ```
+
+---
+
+Let me know if you’d like to break this into multiple docs (like `Getting Started`, `API Reference`, etc.) or generate typed docs from the code itself!
