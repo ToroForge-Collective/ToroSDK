@@ -32,4 +32,11 @@ const configureTNS = async ({ address, password, username }: SetNameInput) => {
   await setName(setNameInput);
 };
 
-export { createWallet, configureTNS };
+const isTNSAvailable = async ({ username }: { username: string }) => {
+  if (!username) {
+    throw new Error("Username is required");
+  }
+  return !(await isNameUsed(username));
+};
+
+export { createWallet, configureTNS, isTNSAvailable };
