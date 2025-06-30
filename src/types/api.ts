@@ -2,7 +2,6 @@ export type CreateKeystoreInput = {
   password: string;
 };
 
-
 export type SetNameInput = {
   address: string;
   password: string;
@@ -26,4 +25,20 @@ export type InitializeDepositInput = {
   currency: string;
   admin: string;
   adminpwd: string;
-}
+};
+
+export type PaymentExtrasInput = {
+  payeraddress?: string;
+  payercity?: string;
+  payerstate?: string;
+  payercountry?: string;
+  payerzipcode?: string;
+  payerphone?: string;
+  description?: string;
+  success_url?: string;
+  cancel_url?: string;
+  paymenttype?: string;
+  feetype?: string;
+  exchange?: string;
+  reusewallet?: string;
+};

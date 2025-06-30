@@ -50,3 +50,69 @@ export const getLatestBlock = async () => {
     throw new Error(error.response ? error.response.data : error.message);
   }
 }
+
+export const getTransaction = async (txHash: string) => {
+  try {
+    const url = `${BASE_URL}/api/blockchain/`;
+    const data = {
+      op: "gettransaction",
+      params: [{ name: "id", value: txHash }],
+    };
+    const config = {
+      method: "post",
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response ? error.response.data : error.message);
+  }
+};
+
+export const getReceipt = async (txHash: string) => {
+  try {
+    const url = `${BASE_URL}/api/blockchain/`;
+    const data = {
+      op: "getreceipt",
+      params: [{ name: "id", value: txHash }],
+    };
+    const config = {
+      method: "post",
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response ? error.response.data : error.message);
+  }
+};
+
+export const getRevertReason = async (txHash: string) => {
+  try {
+    const url = `${BASE_URL}/api/blockchain/`;
+    const data = {
+      op: "getrevertreason",
+      params: [{ name: "id", value: txHash }],
+    };
+    const config = {
+      method: "post",
+      url: url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response ? error.response.data : error.message);
+  }
+};

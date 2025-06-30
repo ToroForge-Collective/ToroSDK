@@ -1,16 +1,19 @@
 import axios from "axios";
 import { BASE_URL, CONNECTW_URL } from "./config";
-import { InitializeDepositInput } from "../types/api";
+import { InitializeDepositInput, PaymentExtrasInput } from "../types/api";
 import { KYCParams } from "../types/params";
 
-const initializeDeposit = async ({
-  usrAddr,
-  username,
-  amount,
-  currency,
-  admin,
-  adminpwd,
-}: InitializeDepositInput) => {
+const initializeDeposit = async (
+  {
+    usrAddr,
+    username,
+    amount,
+    currency,
+    admin,
+    adminpwd,
+  }: InitializeDepositInput,
+  extraData?: PaymentExtrasInput
+) => {
   const url = `${BASE_URL}/api/payment/toro/`;
   const data = {
     op: "paymentinitialize",
@@ -22,17 +25,20 @@ const initializeDeposit = async ({
       { name: "success_url", value: "https://yourweb.com/pmt/done?" },
       { name: "cancel_url", value: "https://toronet.org/cancel" },
       { name: "paymenttype", value: currency === "USD" ? "card" : "card" },
-      { name: "feetype", value: "1" },
-      { name: "exchange", value: "72" },
-      { name: "reusewallet", value: "0" },
+      { name: "feetype", value: extraData?.feetype ?? "1" },
+      { name: "exchange", value: extraData?.exchange ?? "72" },
+      { name: "reusewallet", value: extraData?.reusewallet ?? "0" },
       { name: "payername", value: username },
-      { name: "payeraddress", value: "11 Olaoye Close" },
-      { name: "payercity", value: "Lagos" },
-      { name: "payerstate", value: "" },
-      { name: "payercountry", value: "" },
-      { name: "payerzipcode", value: "" },
-      { name: "payerphone", value: "" },
-      { name: "description", value: "Deposit" },
+      {
+        name: "payeraddress",
+        value: extraData?.payeraddress ?? "11 Olaoye Close",
+      },
+      { name: "payercity", value: extraData?.payercity ?? "Lagos" },
+      { name: "payerstate", value: extraData?.payerstate ?? "" },
+      { name: "payercountry", value: extraData?.payercountry ?? "" },
+      { name: "payerzipcode", value: extraData?.payerzipcode ?? "" },
+      { name: "payerphone", value: extraData?.payerphone ?? "" },
+      { name: "description", value: extraData?.description ?? "Deposit" },
     ],
   };
 

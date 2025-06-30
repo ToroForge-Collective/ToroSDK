@@ -1,17 +1,25 @@
-import { checkAddressVerified, initializeDeposit, setupKYC, verifyDeposit } from "../api/payments";
-import { InitializeDepositInput } from "../types/api";
+import {
+  checkAddressVerified,
+  initializeDeposit,
+  setupKYC,
+  verifyDeposit,
+} from "../api/payments";
+import { InitializeDepositInput, PaymentExtrasInput } from "../types/api";
 import { Currency } from "../types/currency";
 import { KYCParams } from "../types/params";
 import { DepositFundsInput } from "../types/service";
 
-const depositFunds = async ({
-  userAddress,
-  username,
-  amount,
-  currency,
-  admin,
-  adminpwd,
-}: DepositFundsInput) => {
+const depositFunds = async (
+  {
+    userAddress,
+    username,
+    amount,
+    currency,
+    admin,
+    adminpwd,
+  }: DepositFundsInput,
+  extraData?: PaymentExtrasInput
+) => {
   console.log(`🚀 Initiating deposit: ${amount} ${currency} for ${username}`);
   if (!admin || !adminpwd) {
     throw new Error(
@@ -26,7 +34,10 @@ const depositFunds = async ({
     admin: admin,
     adminpwd: adminpwd,
   };
-  const depositDetails = await initializeDeposit(depositInitializationInput);
+  const depositDetails = await initializeDeposit(
+    depositInitializationInput,
+    extraData
+  );
   return depositDetails;
 };
 
@@ -66,10 +77,15 @@ const performKYCForCustomer = async (
   }
 };
 
-const isAddressKYCVerified = async ({address}: {address: string}) => {
+const isAddressKYCVerified = async ({ address }: { address: string }) => {
   console.log(`🔍 Checking KYC status for address: ${address}`);
   const response = await checkAddressVerified(address);
   return response;
 };
 
-export { depositFunds, confirmDeposit, performKYCForCustomer, isAddressKYCVerified };
+export {
+  depositFunds,
+  confirmDeposit,
+  performKYCForCustomer,
+  isAddressKYCVerified,
+};

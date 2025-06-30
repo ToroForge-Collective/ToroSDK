@@ -13,16 +13,18 @@ import {
   verifyWalletPassword,
   getLatestBlockData,
   getBlockchainStatus,
+  getAddressTransactionsEGP
 } from "../src/index";
 
 ///note to run: `npm install -g ts-node typescript` then  ts-node services.ts
 
 async function main() {
   /// Create a new wallet
-  // const address = await createWallet({
-  //   username: "testUsername",
-  //   password: "newToroneggtWallet",
-  // });
+  const address = await createWallet({
+    username: "testUsernameoer",
+    password: "newToroneggtWalletzsa",
+  });
+  console.log("New Wallet Address: ", address);
 
   const data = await getLatestBlockData();
   console.log("Latest Block Data: ", data);
@@ -48,22 +50,39 @@ async function main() {
   /// Get the balances of the wallet
   // const balances = await getBalance({address: address});
   // console.log(balances);
-  //   const address = "0x8d05f2be776279b231a3607464fa72589ba99337";
-  //   const username = "testUsername";
-  //   const amount = "1000";
-  //   const currency = Currency.Kenyan_Shilling;
+  // const address = "0x8d05f2be776279b231a3607464fa72589ba99337";
+  const username = "testUsername";
+  const amount = "1000";
+  const currency = Currency.Kenyan_Shilling;
 
-  //   // Step 1: Initialize Deposit
-
-  //   const depositDetails = await depositFunds({
-  //     userAddress: address,
-  //     username,
-  //     amount,
-  //     currency,
-  //     admin: "adminAddr",
-  //     adminpwd: "@adminPassword",
-  //   });
-  //   console.log("Deposit Details:", depositDetails);
+  // //   // Step 1: Initialize Deposit
+  const extraInput = {
+    payeraddress: "",
+    payercity: "",
+    payerstate: "",
+    payercountry: "",
+    payerzipcode: "",
+    payerphone: "",
+    description: "Deposit for trading",
+    success_url: "https://example.com/success",
+    cancel_url: "https://example.com/cancel",
+    paymenttype: "deposit",
+    feetype: "1",
+    exchange: "72",
+    reusewallet: "0",
+  };
+  const depositDetails = await depositFunds(
+    {
+      userAddress: address,
+      username,
+      amount,
+      currency,
+      admin: "adminAddr",
+      adminpwd: "@adminPassword",
+    },
+    extraInput
+  );
+  console.log("Deposit Details:", depositDetails);
 
   //   //depositDetails.accountnumber is your transactionId if currency is NGN
 
