@@ -1,120 +1,246 @@
 import {
   createWallet,
-  getBalance,
   configureTNS,
+  isTNSAvailable,
+  getBalance,
   depositFunds,
   confirmDeposit,
-  Currency,
-  KYCParams,
   performKYCForCustomer,
   isAddressKYCVerified,
   getWalletKey,
   importWalletFromPrivateKeyAndPassword,
   verifyWalletPassword,
-  getLatestBlockData,
-  getBlockchainStatus,
-  getAddressTransactionsEGP
 } from "../src/index";
+import {
+  getBlockchainStatus,
+  getLatestBlockData,
+  getTransaction,
+  getReceipt,
+  getRevertReason,
+} from "../src/blockchain";
+import {
+  getSupportedAssetsExchangeRates,
+  getBlocksData,
+  getBlockchainTransactions,
+  getAddressRole,
+  getAddressBalance,
+  getBlockById,
+  getTransactionById,
+  getTransactionReceiptById,
+  getEventById,
+  getAddressTransactions,
+  getTransactionsToroWrapper,
+  getAddressTransactionsToro,
+  getTransactionsDollarWrapper,
+  getAddressTransactionsDollar,
+  getTransactionsNairaWrapper,
+  getAddressTransactionsNaira,
+  getTransactionsEuroWrapper,
+  getAddressTransactionsEuro,
+  getTransactionsPoundWrapper,
+  getAddressTransactionsPound,
+  getTransactionsEGPWrapper,
+  getAddressTransactionsEGP,
+  getTransactionsKSHWrapper,
+  getAddressTransactionsKSH,
+  getTransactionsZARWrapper,
+  getAddressTransactionsZAR,
+  getTransactionsETHWrapper,
+  getAddressTransactionsETH,
+  getTransactionsRangeWrapper,
+  getAddressTransactionsAuth,
+  isAddressUtil,
+} from "../src/query";
+import {
+  createVirtualWallet,
+  fetchVirtualWallet,
+  fetchVirtualWalletByAddress,
+  updateVirtualWalletTxs,
+} from "../src/virtualwallet";
+import { Currency } from "../src/types/currency";
 
 ///note to run: `npm install -g ts-node typescript` then  ts-node services.ts
 
 async function main() {
-  /// Create a new wallet
-  const address = await createWallet({
-    username: "testUsernameoer",
-    password: "newToroneggtWalletzsa",
-  });
-  console.log("New Wallet Address: ", address);
+  // Wallet creation and TNS
+  const username = "demoUser" + Math.floor(Math.random() * 10000);
+  const password = "SuperSecretPassword123!";
+  const isAvailable = await isTNSAvailable({ username });
+  console.log("Is TNS available:", isAvailable);
+  if (!isAvailable) return;
+  const address = await createWallet({ username, password });
+  console.log("New Wallet Address:", address);
+  await configureTNS({ address, password, username });
 
-  const data = await getLatestBlockData();
-  console.log("Latest Block Data: ", data);
-  const status = await getBlockchainStatus();
-  console.log("Blockchain Status: ", status);
-
-  const getKey = await getWalletKey({
-    address: "0x8d05f2be776279b231a3607464fa72589ba99337",
+  // Keystore operations
+  const importedAddress = await importWalletFromPrivateKeyAndPassword({
+    pvKey: address,
+    password,
   });
-  console.log("Wallet Key: ", getKey);
-  const importKey = await importWalletFromPrivateKeyAndPassword({
-    pvKey: "0x8d05f2be776279b231a3607464fa72589ba99337",
-    password: "newToroneggtWallet",
-  });
-  console.log("Import Key: ", importKey);
-  const isPasswordCorrect = await verifyWalletPassword({
-    address: "0x8d05f2be776279b231a3607464fa72589ba99337",
-    password: "newToroneggtWallet",
-  });
-  console.log("Verify Key: ", isPasswordCorrect);
-  // console.log("Toronet address: ", address);
+  console.log("Imported Address:", importedAddress);
+  const isPasswordValid = await verifyWalletPassword({ address, password });
+  console.log("Is Password Valid:", isPasswordValid);
+  const walletKey = await getWalletKey({ address });
+  console.log("Wallet Key:", walletKey);
 
-  /// Get the balances of the wallet
-  // const balances = await getBalance({address: address});
-  // console.log(balances);
-  // const address = "0x8d05f2be776279b231a3607464fa72589ba99337";
-  const username = "testUsername";
-  const amount = "1000";
-  const currency = Currency.Kenyan_Shilling;
+  // Balance
+  const balance = await getBalance({ address });
+  console.log("Wallet Balance:", balance);
 
-  // //   // Step 1: Initialize Deposit
-  const extraInput = {
-    payeraddress: "",
-    payercity: "",
-    payerstate: "",
-    payercountry: "",
-    payerzipcode: "",
-    payerphone: "",
-    description: "Deposit for trading",
-    success_url: "https://example.com/success",
-    cancel_url: "https://example.com/cancel",
-    paymenttype: "deposit",
-    feetype: "1",
-    exchange: "72",
-    reusewallet: "0",
-  };
+  // Payments & KYC
   const depositDetails = await depositFunds(
     {
       userAddress: address,
       username,
-      amount,
-      currency,
-      admin: "adminAddr",
-      adminpwd: "@adminPassword",
+      amount: "5000",
+      currency: Currency.Naira,
+      admin: "0xadminaddress",
+      adminpwd: "adminpassword",
     },
-    extraInput
+    {
+      payeraddress: "123 Main St",
+      payercity: "Lagos",
+      payerstate: "Lagos",
+      payercountry: "Nigeria",
+      payerzipcode: "100001",
+      payerphone: "+2348012345678",
+      description: "Initial deposit",
+      success_url: "https://example.com/success",
+      cancel_url: "https://example.com/cancel",
+      paymenttype: "deposit",
+      feetype: "1",
+      exchange: "72",
+      reusewallet: "0",
+    }
   );
   console.log("Deposit Details:", depositDetails);
+  const isDepositConfirmed = await confirmDeposit({
+    currency: Currency.Naira,
+    transactionId: "TX1234567890",
+  });
+  console.log("Deposit Confirmed:", isDepositConfirmed);
 
-  //   //depositDetails.accountnumber is your transactionId if currency is NGN
+  const kycParams = {
+    firstName: "John",
+    middleName: "Doe",
+    lastName: "Smith",
+    bvn: "12345678901",
+    currency: Currency.Naira,
+    phoneNumber: "+2348012345678",
+    dob: "1990-01-01",
+    address,
+    admin: "0xadminaddress",
+    adminpwd: "adminpassword",
+  };
+  const kycResult = await performKYCForCustomer(kycParams);
+  console.log("KYC Result:", kycResult);
+  const kycVerified = await isAddressKYCVerified({ address });
+  console.log("KYC Verified:", kycVerified);
 
-  //   // Step 2: (After transfer) Verify Deposit
+  // Blockchain
+  const latestBlock = await getLatestBlockData();
+  console.log("Latest Block:", latestBlock);
+  const blockchainStatus = await getBlockchainStatus();
+  console.log("Blockchain Status:", blockchainStatus);
+  const txHash = "0x1234567890abcdef";
+  const transaction = await getTransaction(txHash);
+  console.log("Transaction:", transaction);
+  const receipt = await getReceipt(txHash);
+  console.log("Receipt:", receipt);
+  const revertReason = await getRevertReason(txHash);
+  console.log("Revert Reason:", revertReason);
 
-  //   // const transactionId = "1234567890abcd"; // TXID from the bank transfer
-  //   // const isDepositConfirmed = await confirmDeposit({
-  //   //   currency: "NGN",
-  //   //   transactionId,
-  //   // });
-  //   // console.log("Deposit Success:", isDepositConfirmed);
+  // Query endpoints
+  const exchangeRates = await getSupportedAssetsExchangeRates();
+  console.log("Exchange Rates:", exchangeRates);
+  const blocks = await getBlocksData(5);
+  console.log("Blocks:", blocks);
+  const transactions = await getBlockchainTransactions(10);
+  console.log("Blockchain Transactions:", transactions);
+  const addrRole = await getAddressRole(address);
+  console.log("Address Role:", addrRole);
+  const addrBalance = await getAddressBalance(address);
+  console.log("Address Balance:", addrBalance);
+  const blockById = await getBlockById("latest");
+  console.log("Block By ID:", blockById);
+  const txById = await getTransactionById(txHash);
+  console.log("Transaction By ID:", txById);
+  const txReceiptById = await getTransactionReceiptById(txHash);
+  console.log("Transaction Receipt By ID:", txReceiptById);
+  const eventById = await getEventById("event123");
+  console.log("Event By ID:", eventById);
+  const addrTxs = await getAddressTransactions(address, 5);
+  console.log("Address Transactions:", addrTxs);
+  const txsToro = await getTransactionsToroWrapper(5);
+  console.log("Transactions Toro:", txsToro);
+  const addrTxsToro = await getAddressTransactionsToro(address, 5);
+  console.log("Address Transactions Toro:", addrTxsToro);
+  const txsDollar = await getTransactionsDollarWrapper(5);
+  console.log("Transactions Dollar:", txsDollar);
+  const addrTxsDollar = await getAddressTransactionsDollar(address, 5);
+  console.log("Address Transactions Dollar:", addrTxsDollar);
+  const txsNaira = await getTransactionsNairaWrapper(5);
+  console.log("Transactions Naira:", txsNaira);
+  const addrTxsNaira = await getAddressTransactionsNaira(address, 5);
+  console.log("Address Transactions Naira:", addrTxsNaira);
+  const txsEuro = await getTransactionsEuroWrapper(5);
+  console.log("Transactions Euro:", txsEuro);
+  const addrTxsEuro = await getAddressTransactionsEuro(address, 5);
+  console.log("Address Transactions Euro:", addrTxsEuro);
+  const txsPound = await getTransactionsPoundWrapper(5);
+  console.log("Transactions Pound:", txsPound);
+  const addrTxsPound = await getAddressTransactionsPound(address, 5);
+  console.log("Address Transactions Pound:", addrTxsPound);
+  const txsEGP = await getTransactionsEGPWrapper(5);
+  console.log("Transactions EGP:", txsEGP);
+  const addrTxsEGP = await getAddressTransactionsEGP(address, 5);
+  console.log("Address Transactions EGP:", addrTxsEGP);
+  const txsKSH = await getTransactionsKSHWrapper(5);
+  console.log("Transactions KSH:", txsKSH);
+  const addrTxsKSH = await getAddressTransactionsKSH(address, 5);
+  console.log("Address Transactions KSH:", addrTxsKSH);
+  const txsZAR = await getTransactionsZARWrapper(5);
+  console.log("Transactions ZAR:", txsZAR);
+  const addrTxsZAR = await getAddressTransactionsZAR(address, 5);
+  console.log("Address Transactions ZAR:", addrTxsZAR);
+  const txsETH = await getTransactionsETHWrapper(5);
+  console.log("Transactions ETH:", txsETH);
+  const addrTxsETH = await getAddressTransactionsETH(address, 5);
+  console.log("Address Transactions ETH:", addrTxsETH);
+  const txsRange = await getTransactionsRangeWrapper(0, 10);
+  console.log("Transactions Range:", txsRange);
+  const addrTxsAuth = await getAddressTransactionsAuth(address, 5);
+  console.log("Address Transactions Auth:", addrTxsAuth);
+  const isAddrValid = await isAddressUtil(address);
+  console.log("Is Address Valid:", isAddrValid);
 
-  //   const kycparams: KYCParams = {
-  //     firstName: "John",
-  //     middleName: "Doe",
-  //     lastName: "Doe",
-  //     bvn: "123456789",
-  //     currency: "NGN",
-  //     phoneNumber: "08012345678",
-  //     dob: "1990-01-01",
-  //     address: "0x8d05f2be776279b231a3607464fa72589ba99337", // user's wallet address
-  //     admin: "adminAddr",
-  //     adminpwd: "@adminPassword",
-  //   };
-
-  //   const isKYCSuccessful = await performKYCForCustomer(kycparams);
-  //   console.log("KYC Response:", isKYCSuccessful);
-
-  //  const isAddressVerified = await isAddressKYCVerified({
-  //     address: "0x8d05f2be776279b231a3607464fa72589ba99337",
-  //   });
-  //   console.log("Address Verification:", isAddressVerified);
+  // Virtual Wallet
+  const virtualWallet = await createVirtualWallet({
+    address,
+    payername: "Demo User",
+    currency: Currency.Naira,
+    admin: "0xadminaddress",
+    adminpwd: "adminpassword",
+  });
+  console.log("Created Virtual Wallet:", virtualWallet);
+  const fetchedVirtualWallet = await fetchVirtualWallet({
+    virtualwallet: "8900610225",
+    admin: "0xadminaddress",
+    adminpwd: "adminpassword",
+  });
+  console.log("Fetched Virtual Wallet:", fetchedVirtualWallet);
+  const fetchedVirtualWalletByAddress = await fetchVirtualWalletByAddress({
+    address,
+    admin: "0xadminaddress",
+    adminpwd: "adminpassword",
+  });
+  console.log("Fetched Virtual Wallet By Address:", fetchedVirtualWalletByAddress);
+  const updatedVirtualWalletTxs = await updateVirtualWalletTxs({
+    walletaddress: "8900610225",
+    admin: "0xadminaddress",
+    adminpwd: "adminpassword",
+  });
+  console.log("Updated Virtual Wallet Transactions:", updatedVirtualWalletTxs);
 }
 
 main();
