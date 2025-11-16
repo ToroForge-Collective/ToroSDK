@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL, CONNECTW_URL } from "./config";
 import { InitializeDepositInput, PaymentExtrasInput } from "../types/api";
 import { KYCParams } from "../types/params";
+import { Currency } from "../types/currency";
 
 const initializeDeposit = async (
   {
@@ -24,7 +25,7 @@ const initializeDeposit = async (
       { name: "amount", value: amount },
       { name: "success_url", value: "https://yourweb.com/pmt/done?" },
       { name: "cancel_url", value: "https://toronet.org/cancel" },
-      { name: "paymenttype", value: currency === "USD" ? "card" : "card" },
+      { name: "paymenttype", value: currency === "USD" ? "card" : "bank" },
       { name: "feetype", value: extraData?.feetype ?? "1" },
       { name: "exchange", value: extraData?.exchange ?? "72" },
       { name: "reusewallet", value: extraData?.reusewallet ?? "0" },
@@ -156,4 +157,46 @@ const checkAddressVerified = async (address: string) => {
   }
 };
 
-export { initializeDeposit, verifyDeposit, setupKYC, checkAddressVerified };
+const makeInterWalletTransfer = async (
+  senderAddr: string,
+  senderPwd: string,
+  receiverAddr: string,
+  amount: string,
+  currencyName: string
+) => {
+  const currencyConfig: Record<string, string> = {
+    "NGN": "naira",
+    "USD": "dollar",
+    "EUR": "EUR",
+    "GBP": "GBP",
+    "KES": "KES",
+    "ZAR": "ZAR",
+  };
+  const currencyValue = currencyConfig[currencyName];
+  const url = `${BASE_URL}/api/currency/${currencyValue}/cl`;
+  console.log("URL:", url);
+  const data = {
+    op: "transfer",
+    params: [
+      { name: "client", value: senderAddr },
+      { name: "clientpwd", value: senderPwd },
+      { name: "to", value: receiverAddr },
+      { name: "val", value: amount.toString() },
+    ],
+  };
+  const response = await axios.post(url, data);
+  //console.log("Response:", response.data);
+  if (response.data.result == false)
+   {
+    throw new Error(response.data.error);
+   }
+  return response.data;
+};
+
+export {
+  initializeDeposit,
+  verifyDeposit,
+  setupKYC,
+  checkAddressVerified,
+  makeInterWalletTransfer,
+};
