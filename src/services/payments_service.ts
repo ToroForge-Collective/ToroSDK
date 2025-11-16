@@ -3,6 +3,7 @@ import {
   initializeDeposit,
   setupKYC,
   verifyDeposit,
+  makeInterWalletTransfer,
 } from "../api/payments";
 import { InitializeDepositInput, PaymentExtrasInput } from "../types/api";
 import { Currency } from "../types/currency";
@@ -83,9 +84,30 @@ const isAddressKYCVerified = async ({ address }: { address: string }) => {
   return response;
 };
 
+const makeInterWalletTransferTxn = async (
+  senderAddr: string,
+  senderPwd: string,
+  receiverAddr: string,
+  amount: string,
+  currencyName: string
+) => {
+  console.log(
+    `🔍 Making inter-wallet transfer from ${senderAddr} to ${receiverAddr} for ${amount} ${currencyName}`
+  );
+  const response = await makeInterWalletTransfer(
+    senderAddr,
+    senderPwd,
+    receiverAddr,
+    amount,
+    currencyName
+  );
+  return response;
+};
+
 export {
   depositFunds,
   confirmDeposit,
   performKYCForCustomer,
   isAddressKYCVerified,
+  makeInterWalletTransferTxn,
 };
