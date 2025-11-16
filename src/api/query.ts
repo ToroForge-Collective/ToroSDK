@@ -5,7 +5,7 @@ export const getExchangeRates = async () => {
   try {
     const url = `${BASE_URL}/api/query/`;
     const data = {
-      op: "get_exchange_rates",
+      op: "getexchangerates",
       params: [],
     };
 
@@ -18,7 +18,7 @@ export const getExchangeRates = async () => {
       data: data,
     };
     const response = await axios(config);
-    console.dir(response.data, { depth: null });
+    //console.dir(response.data, { depth: null });
     return response.data;
   } catch (error: any) {
     console.error(
@@ -145,7 +145,7 @@ export const getBlock = async ({ id }: { id: string }) => {
   }
 };
 
-export const getTransaction = async ({ id }: { id: string }) => {
+export const getTransactionById = async ({ id }: { id: string }) => {
   try {
     const url = `${BASE_URL}/api/query/`;
     const data = {
