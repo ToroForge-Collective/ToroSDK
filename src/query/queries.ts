@@ -3,7 +3,7 @@ import {
   getAddrRole,
   getAddrBalance,
   getBlock,
-  getTransaction,
+  getTransactionById as apiGetTransactionById,
   getTransactionReceipt,
   getEvent,
   getAddrTransactions,
@@ -63,7 +63,7 @@ const getBlockchainTransactions = async (count: number) => {
 const getAddressRole = async (address: string) => getAddrRole({ address });
 const getAddressBalance = async (address: string) => getAddrBalance({ address });
 const getBlockById = async (id: string) => getBlock({ id });
-const getTransactionById = async (id: string) => getTransaction({ id });
+const getTransactionById = async (id: string) => apiGetTransactionById({ id });
 const getTransactionReceiptById = async (id: string) => getTransactionReceipt({ id });
 const getEventById = async (id: string) => getEvent({ id });
 const getAddressTransactions = async (address: string, count: number) => getAddrTransactions({ address, count });
