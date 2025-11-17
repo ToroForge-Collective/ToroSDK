@@ -43,6 +43,52 @@ The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet b
 - **Address Validation Utility**
   - Validate if a string is a valid Toronet address.
 
+- **Advanced Keystore Operations**
+  - Update wallet password.
+  - Delete keystore from server.
+
+- **Storage Operations**
+  - Query storage status, contracts, and versions.
+  - Owner operations: enable/disable storage, register contracts, manage versions.
+  - Transfer storage ownership.
+
+- **Advanced TNS Operations**
+  - Query name by address, address by name.
+  - Update and delete TNS names.
+  - Permission management (set, update, delete permissions).
+  - Admin TNS operations.
+
+- **Role Management**
+  - Admin, Super Admin, and Debugger role operations.
+  - Query roles, add/remove role members.
+  - Initialize role systems.
+
+- **Token Operations**
+  - Token metadata (name, symbol, decimals).
+  - Allowance queries (minimum, maximum, current).
+  - Transaction fee queries.
+  - Supply queries (reserve, total cap, circulating).
+  - Status checks (enrollment, frozen, feature flags).
+
+- **Advanced Currency Operations**
+  - Owner operations: enable/disable transfer, mint, burn.
+  - Admin operations: freeze/unfreeze, enroll, mint, burn, set allowances.
+  - Fee configuration.
+
+- **Product Management**
+  - Get project information.
+  - Create, read, update products.
+
+- **Advanced Payment Operations**
+  - Bank list queries (USD, NGN).
+  - Fiat withdrawal operations.
+  - Bank account verification (NGN).
+  - Date range queries for transactions and withdrawals.
+
+- **Advanced Query Operations**
+  - Address transactions with date range and token filtering.
+  - Pagination support.
+
 ---
 
 ## Installation
@@ -50,6 +96,33 @@ The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet b
 ```bash
 npm install torosdk
 ```
+
+---
+
+## Configuration
+
+### Network Selection (Testnet/Mainnet)
+
+The SDK supports both mainnet and testnet. You can configure the network when initializing:
+
+```typescript
+import { initializeSDK } from "torosdk";
+
+// Use testnet
+initializeSDK({ network: 'testnet' });
+
+// Use mainnet (default)
+initializeSDK({ network: 'mainnet' });
+
+// Or use custom URLs
+initializeSDK({
+  network: 'mainnet',
+  baseURL: 'https://custom-toronet.org',
+  connectWURL: 'https://custom-connectw.com'
+});
+```
+
+**Note:** If you don't configure the SDK, it defaults to mainnet. All API calls will automatically use the configured network.
 
 ---
 
@@ -345,6 +418,353 @@ const updatedVirtualWalletTxs = await updateVirtualWalletTxs({
   adminpwd: "adminpassword",
 });
 console.log("Updated Virtual Wallet Transactions:", updatedVirtualWalletTxs);
+```
+
+---
+
+### 🔄 Update Wallet Password
+
+```typescript
+import { updatePassword } from "torosdk";
+
+const result = await updatePassword({
+  address: "0xYourWalletAddress",
+  oldPassword: "oldPassword123",
+  newPassword: "newPassword456"
+});
+console.log("Password updated:", result);
+```
+
+---
+
+### 🗑️ Delete Wallet
+
+```typescript
+import { deleteWallet } from "torosdk";
+
+const result = await deleteWallet({
+  address: "0xYourWalletAddress",
+  password: "yourPassword"
+});
+console.log("Wallet deleted:", result);
+```
+
+---
+
+### 🗄️ Storage Operations
+
+```typescript
+import {
+  isStorageOn,
+  getStorageVersion,
+  isContractRegistered,
+  setStorageOn,
+  registerContract,
+  transferOwnership
+} from "torosdk";
+
+// Query operations
+const isOn = await isStorageOn();
+const version = await getStorageVersion();
+const isRegistered = await isContractRegistered({ contract: "0xContractAddress" });
+
+// Owner operations
+await setStorageOn({
+  address: "0xOwnerAddress",
+  password: "ownerPassword"
+});
+
+await registerContract({
+  address: "0xOwnerAddress",
+  password: "ownerPassword",
+  contract: "0xContractAddress"
+});
+
+await transferOwnership({
+  address: "0xOwnerAddress",
+  password: "ownerPassword",
+  newOwner: "0xNewOwnerAddress"
+});
+```
+
+---
+
+### 📝 Advanced TNS Operations
+
+```typescript
+import {
+  getName,
+  getAddr,
+  updateName,
+  deleteName,
+  isAddrAssigned,
+  adminSetName
+} from "torosdk";
+
+// Query operations
+const name = await getName({ address: "0xAddress" });
+const address = await getAddr({ name: "username" });
+const isAssigned = await isAddrAssigned({ address: "0xAddress" });
+
+// Client operations
+await updateName({
+  address: "0xAddress",
+  password: "password",
+  username: "newusername"
+});
+
+await deleteName({
+  address: "0xAddress",
+  password: "password"
+});
+
+// Admin operations
+await adminSetName({
+  address: "0xAddress",
+  username: "newusername",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+```
+
+---
+
+### 👥 Role Management
+
+```typescript
+import {
+  isAdmin,
+  addAdmin,
+  removeAdmin,
+  isSuperAdmin,
+  addSuperAdmin,
+  isDebugger
+} from "torosdk";
+
+// Check roles
+const isAddrAdmin = await isAdmin({ address: "0xAddress" });
+const isAddrSuperAdmin = await isSuperAdmin({ address: "0xAddress" });
+const isAddrDebugger = await isDebugger({ address: "0xAddress" });
+
+// Manage admins (requires super admin)
+await addAdmin({
+  address: "0xSuperAdminAddress",
+  password: "superAdminPassword",
+  adminAddress: "0xNewAdminAddress"
+});
+
+await removeAdmin({
+  address: "0xSuperAdminAddress",
+  password: "superAdminPassword",
+  adminAddress: "0xAdminToRemove"
+});
+```
+
+---
+
+### 🪙 Token Operations
+
+```typescript
+import {
+  getTokenName,
+  getTokenSymbol,
+  getTokenDecimal,
+  getTokenBalance,
+  getAllowance,
+  getTransactionFee,
+  isEnrolled,
+  isFrozen
+} from "torosdk";
+
+// Token metadata
+const name = await getTokenName();
+const symbol = await getTokenSymbol();
+const decimals = await getTokenDecimal();
+
+// Balance and allowances
+const balance = await getTokenBalance({ address: "0xAddress" });
+const allowance = await getAllowance({
+  owner: "0xOwnerAddress",
+  spender: "0xSpenderAddress"
+});
+
+// Fees
+const fee = await getTransactionFee({ amount: "1000" });
+
+// Status checks
+const enrolled = await isEnrolled({ address: "0xAddress" });
+const frozen = await isFrozen({ address: "0xAddress" });
+```
+
+---
+
+### 💱 Advanced Currency Operations
+
+```typescript
+import {
+  getCurrencyBalance,
+  transferCurrency,
+  allowTransfer,
+  freezeAddress,
+  enrollAddress,
+  mintCurrency,
+  burnCurrency
+} from "torosdk";
+
+// Get balance
+const balance = await getCurrencyBalance({
+  currency: "NGN",
+  address: "0xAddress"
+});
+
+// Transfer (client)
+await transferCurrency({
+  currency: "NGN",
+  senderAddr: "0xSender",
+  senderPwd: "password",
+  receiverAddr: "0xReceiver",
+  amount: "1000"
+});
+
+// Owner operations
+await allowTransfer({
+  currency: "NGN",
+  address: "0xOwnerAddress",
+  password: "ownerPassword"
+});
+
+// Admin operations
+await freezeAddress({
+  currency: "NGN",
+  address: "0xAdminAddress",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword",
+  targetAddress: "0xTargetAddress"
+});
+
+await mintCurrency({
+  currency: "NGN",
+  address: "0xAdminAddress",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword",
+  targetAddress: "0xRecipientAddress",
+  amount: "1000"
+});
+```
+
+---
+
+### 📦 Product Management
+
+```typescript
+import {
+  getProject,
+  getProduct,
+  recordProduct,
+  updateProduct
+} from "torosdk";
+
+// Get project info
+const project = await getProject({
+  admin: "0xAdminAddress",
+  getbalances: "true"
+});
+
+// Product operations
+const product = await getProduct({
+  productId: "product123",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+
+await recordProduct({
+  productId: "product123",
+  productName: "My Product",
+  description: "Product description",
+  productImage: "https://example.com/image.jpg",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+```
+
+---
+
+### 💳 Advanced Payment Operations
+
+```typescript
+import {
+  getBankListUSD,
+  getBankListNGN,
+  recordFiatWithdrawal,
+  verifyBankAccountNameNGN,
+  getFiatTransactionsAddressRange,
+  getFiatWithdrawalsAddressRange
+} from "torosdk";
+
+// Get bank lists
+const usdBanks = await getBankListUSD({
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+
+const ngnBanks = await getBankListNGN({
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+
+// Record withdrawal
+await recordFiatWithdrawal({
+  address: "0xAddress",
+  password: "password",
+  currency: "NGN",
+  token: "NGN",
+  payername: "John Doe",
+  payeremail: "john@example.com",
+  description: "Withdrawal",
+  amount: "1000",
+  accounttype: "savings",
+  bankname: "Bank Name",
+  routingno: "123456",
+  accountno: "1234567890",
+  accountname: "John Doe",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+
+// Verify bank account
+const verification = await verifyBankAccountNameNGN({
+  destinationInstitutionCode: "058",
+  accountNumber: "1234567890",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+
+// Date range queries
+const transactions = await getFiatTransactionsAddressRange({
+  address: "0xAddress",
+  startDate: "2024-01-01",
+  endDate: "2024-12-31",
+  currency: "NGN",
+  admin: "0xAdminAddress",
+  adminpwd: "adminPassword"
+});
+```
+
+---
+
+### 🔍 Advanced Query Operations with Date Ranges
+
+```typescript
+import { getAddrTransactionsRange } from "torosdk";
+
+const transactions = await getAddrTransactionsRange({
+  address: "0xAddress",
+  startDate: "2024-01-01",
+  endDate: "2024-12-31",
+  token: "NGN", // Optional token filter
+  count: 100, // Optional pagination
+  start: 0 // Optional offset
+});
 ```
 
 ---
