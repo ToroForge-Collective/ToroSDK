@@ -42,3 +42,52 @@ export type PaymentExtrasInput = {
   exchange?: string;
   reusewallet?: string;
 };
+
+export type UpdateKeyPasswordInput = {
+  address: string;
+  oldPassword: string;
+  newPassword: string;
+};
+
+export type DeleteKeyInput = {
+  address: string;
+  password: string;
+};
+
+export type WithdrawalInput = {
+  address: string;
+  password: string;
+  currency: string;
+  token: string;
+  payername: string;
+  payeremail: string;
+  payeraddress?: string;
+  payercity?: string;
+  payerstate?: string;
+  payercountry?: string;
+  payerzipcode?: string;
+  payerphone?: string;
+  description: string;
+  amount: string;
+  accounttype: string;
+  bankname: string;
+  routingno: string;
+  accountno: string;
+  expirydate?: string;
+  accountname: string;
+  recipientstate?: string;
+  recipientzip?: string;
+  recipientphone?: string;
+  admin: string;
+  adminpwd: string;
+};
+
+export type DateRangeQueryInput = {
+  address: string;
+  startDate: string; // Format: YYYY-MM-DD
+  endDate: string; // Format: YYYY-MM-DD
+  currency?: string;
+  token?: string;
+  admin: string;
+  adminpwd: string;
+};
