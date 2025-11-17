@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "./config";
+import { getBaseURL } from "./config";
 
 // NOTE: If you see a linter error about Object.entries, update tsconfig.json lib to include "es2017" or later.
 
@@ -18,7 +18,7 @@ export const generateVirtualWallet = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${BASE_URL}/api/payment/toro/`;
+    const url = `${getBaseURL()}/api/payment/toro/`;
     const data = {
       op: "generatevirtualwallet",
       params: [
@@ -52,7 +52,7 @@ export const retrieveVirtualWallet = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${BASE_URL}/api/payment/`;
+    const url = `${getBaseURL()}/api/payment/`;
     const data = {
       op: "retrievevirtualwallet",
       params: [
@@ -84,7 +84,7 @@ export const getVirtualWalletByAddress = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${BASE_URL}/api/payment/`;
+    const url = `${getBaseURL()}/api/payment/`;
     const data = {
       op: "getvirtualwalletbyaddress",
       params: [
@@ -116,7 +116,7 @@ export const updateVirtualWalletTransactions = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${BASE_URL}/api/payment/`;
+    const url = `${getBaseURL()}/api/payment/`;
     const data = {
       op: "updatevirtualwallettransactions",
       params: [
