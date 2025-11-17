@@ -95,23 +95,6 @@ import {
 // Network configuration
 import { initializeSDK } from "../src/config/sdk_config";
 
-// Storage operations
-import {
-  isStorageOn,
-  getStorageVersion,
-  isContractRegistered,
-  isOwner,
-  getOwner,
-  setStorageOn,
-  setStorageOff,
-  registerContract,
-  unregisterContract,
-  increaseStorageVersion,
-  decreaseStorageVersion,
-  setStorageVersion,
-  transferOwnership,
-} from "../src/api/storage";
-
 // Advanced TNS operations
 import {
   getName,
@@ -531,65 +514,9 @@ async function main() {
   }
 
   // ============================================================================
-  // SECTION 7: STORAGE OPERATIONS
+  // SECTION 7: ROLE MANAGEMENT
   // ============================================================================
-  console.log("\n=== SECTION 7: STORAGE OPERATIONS ===");
-  console.log("⚠️ NOTE: Storage operations require owner privileges");
-
-  try {
-    // Query operations
-    const storageEnabled = await isStorageOn();
-    console.log("✓ Storage enabled:", storageEnabled);
-
-    const storageVersion = await getStorageVersion();
-    console.log("✓ Storage version:", storageVersion);
-
-    const isRegistered = await isContractRegistered({
-      contract: "0xContractAddress",
-    });
-    console.log("✓ Contract registered:", isRegistered);
-
-    const isAddrOwner = await isOwner({ address: address! });
-    console.log("✓ Is address owner:", isAddrOwner);
-
-    const owner = await getOwner();
-    console.log("✓ Storage owner:", owner);
-
-    // Owner operations (requires owner privileges)
-    // await setStorageOn({
-    //   address: "0xOwnerAddress",
-    //   password: "ownerPassword",
-    // });
-    // console.log("✓ Storage enabled");
-
-    // await registerContract({
-    //   address: "0xOwnerAddress",
-    //   password: "ownerPassword",
-    //   contract: "0xContractAddress",
-    // });
-    // console.log("✓ Contract registered");
-
-    // await increaseStorageVersion({
-    //   address: "0xOwnerAddress",
-    //   password: "ownerPassword",
-    // });
-    // console.log("✓ Storage version increased");
-
-    // await transferOwnership({
-    //   address: "0xOwnerAddress",
-    //   password: "ownerPassword",
-    //   newOwner: "0xNewOwnerAddress",
-    // });
-    // console.log("✓ Ownership transferred");
-
-  } catch (error: any) {
-    console.error("❌ Storage operations error:", error.message);
-  }
-
-  // ============================================================================
-  // SECTION 8: ROLE MANAGEMENT
-  // ============================================================================
-  console.log("\n=== SECTION 8: ROLE MANAGEMENT ===");
+  console.log("\n=== SECTION 7: ROLE MANAGEMENT ===");
   console.log("⚠️ NOTE: Role operations require appropriate privileges");
 
   try {
@@ -641,9 +568,9 @@ async function main() {
   }
 
   // ============================================================================
-  // SECTION 9: TOKEN OPERATIONS
+  // SECTION 8: TOKEN OPERATIONS
   // ============================================================================
-  console.log("\n=== SECTION 9: TOKEN OPERATIONS ===");
+  console.log("\n=== SECTION 8: TOKEN OPERATIONS ===");
 
   try {
     // Token metadata
@@ -714,9 +641,9 @@ async function main() {
   }
 
   // ============================================================================
-  // SECTION 10: CURRENCY OPERATIONS
+  // SECTION 9: CURRENCY OPERATIONS
   // ============================================================================
-  console.log("\n=== SECTION 10: CURRENCY OPERATIONS ===");
+  console.log("\n=== SECTION 9: CURRENCY OPERATIONS ===");
   console.log("⚠️ NOTE: Some operations require owner/admin privileges");
 
   try {
@@ -770,9 +697,9 @@ async function main() {
   }
 
   // ============================================================================
-  // SECTION 11: PAYMENT OPERATIONS
+  // SECTION 10: PAYMENT OPERATIONS
   // ============================================================================
-  console.log("\n=== SECTION 11: PAYMENT OPERATIONS ===");
+  console.log("\n=== SECTION 10: PAYMENT OPERATIONS ===");
   console.log("⚠️ NOTE: Payment operations require admin credentials from https://payments.connectw.com/");
 
   try {
@@ -884,9 +811,9 @@ async function main() {
   }
 
   // ============================================================================
-  // SECTION 12: PRODUCT MANAGEMENT
+  // SECTION 11: PRODUCT MANAGEMENT
   // ============================================================================
-  console.log("\n=== SECTION 12: PRODUCT MANAGEMENT ===");
+  console.log("\n=== SECTION 11: PRODUCT MANAGEMENT ===");
   console.log("⚠️ NOTE: Product operations require admin credentials");
 
   try {
@@ -932,9 +859,9 @@ async function main() {
   }
 
   // ============================================================================
-  // SECTION 13: VIRTUAL WALLETS
+  // SECTION 12: VIRTUAL WALLETS
   // ============================================================================
-  console.log("\n=== SECTION 13: VIRTUAL WALLETS ===");
+  console.log("\n=== SECTION 12: VIRTUAL WALLETS ===");
   console.log("⚠️ NOTE: Virtual wallet operations require admin credentials");
 
   try {
