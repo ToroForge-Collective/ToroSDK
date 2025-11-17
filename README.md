@@ -47,11 +47,6 @@ The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet b
   - Update wallet password.
   - Delete keystore from server.
 
-- **Storage Operations**
-  - Query storage status, contracts, and versions.
-  - Owner operations: enable/disable storage, register contracts, manage versions.
-  - Transfer storage ownership.
-
 - **Advanced TNS Operations**
   - Query name by address, address by name.
   - Update and delete TNS names.
@@ -447,44 +442,6 @@ const result = await deleteWallet({
   password: "yourPassword"
 });
 console.log("Wallet deleted:", result);
-```
-
----
-
-### 🗄️ Storage Operations
-
-```typescript
-import {
-  isStorageOn,
-  getStorageVersion,
-  isContractRegistered,
-  setStorageOn,
-  registerContract,
-  transferOwnership
-} from "torosdk";
-
-// Query operations
-const isOn = await isStorageOn();
-const version = await getStorageVersion();
-const isRegistered = await isContractRegistered({ contract: "0xContractAddress" });
-
-// Owner operations
-await setStorageOn({
-  address: "0xOwnerAddress",
-  password: "ownerPassword"
-});
-
-await registerContract({
-  address: "0xOwnerAddress",
-  password: "ownerPassword",
-  contract: "0xContractAddress"
-});
-
-await transferOwnership({
-  address: "0xOwnerAddress",
-  password: "ownerPassword",
-  newOwner: "0xNewOwnerAddress"
-});
 ```
 
 ---
