@@ -1,9 +1,9 @@
 import axios from "axios";
-import { BASE_URL,  } from "./config";
+import { getBaseURL } from "./config";
 
 export const getExchangeRates = async () => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getexchangerates",
       params: [],
@@ -31,7 +31,7 @@ export const getExchangeRates = async () => {
 
 export const getBlocks = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getblocks",
       params: [{ name: "count", value: count }],
@@ -46,7 +46,6 @@ export const getBlocks = async ({ count }: { count: number }) => {
       data: data,
     };
     const response = await axios(config);
-    console.dir(response.data, { depth: null });
     return response.data;
   } catch (error: any) {
     console.error(
@@ -59,7 +58,7 @@ export const getBlocks = async ({ count }: { count: number }) => {
 
 export const getTransactions = async ({count}: { count: number }) => {
     try {
-        const url = `${BASE_URL}/api/query/`;
+        const url = `${getBaseURL()}/api/query/`;
         const data = {
         op: "gettransactions",
         params: [{ name: "count", value: count }],
@@ -74,7 +73,6 @@ export const getTransactions = async ({count}: { count: number }) => {
         data: data,
         };
         const response = await axios(config);
-        console.dir(response.data, { depth: null });
         return response.data;
     } catch (error: any) {
         console.error(
@@ -87,7 +85,7 @@ export const getTransactions = async ({count}: { count: number }) => {
 
 export const getAddrRole = async ({ address }: { address: string }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrrole",
       params: [{ name: "addr", value: address }],
@@ -107,7 +105,7 @@ export const getAddrRole = async ({ address }: { address: string }) => {
 
 export const getAddrBalance = async ({ address }: { address: string }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrbalance",
       params: [{ name: "addr", value: address }],
@@ -127,7 +125,7 @@ export const getAddrBalance = async ({ address }: { address: string }) => {
 
 export const getBlock = async ({ id }: { id: string }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getblock",
       params: [{ name: "id", value: id }],
@@ -147,7 +145,7 @@ export const getBlock = async ({ id }: { id: string }) => {
 
 export const getTransactionById = async ({ id }: { id: string }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransaction",
       params: [{ name: "id", value: id }],
@@ -167,7 +165,7 @@ export const getTransactionById = async ({ id }: { id: string }) => {
 
 export const getTransactionReceipt = async ({ id }: { id: string }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactionreceipt",
       params: [{ name: "id", value: id }],
@@ -187,7 +185,7 @@ export const getTransactionReceipt = async ({ id }: { id: string }) => {
 
 export const getEvent = async ({ id }: { id: string }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getevent",
       params: [{ name: "id", value: id }],
@@ -207,7 +205,7 @@ export const getEvent = async ({ id }: { id: string }) => {
 
 export const getAddrTransactions = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions",
       params: [
@@ -230,7 +228,7 @@ export const getAddrTransactions = async ({ address, count }: { address: string,
 
 export const getTransactionsToro = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_toro",
       params: [{ name: "count", value: count }],
@@ -250,7 +248,7 @@ export const getTransactionsToro = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsToro = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_toro",
       params: [
@@ -273,7 +271,7 @@ export const getAddrTransactionsToro = async ({ address, count }: { address: str
 
 export const getTransactionsDollar = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_dollar",
       params: [{ name: "count", value: count }],
@@ -293,7 +291,7 @@ export const getTransactionsDollar = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsDollar = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_dollar",
       params: [
@@ -316,7 +314,7 @@ export const getAddrTransactionsDollar = async ({ address, count }: { address: s
 
 export const getTransactionsNaira = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_naira",
       params: [{ name: "count", value: count }],
@@ -336,7 +334,7 @@ export const getTransactionsNaira = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsNaira = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_naira",
       params: [
@@ -359,7 +357,7 @@ export const getAddrTransactionsNaira = async ({ address, count }: { address: st
 
 export const getTransactionsEuro = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_euro",
       params: [{ name: "count", value: count }],
@@ -379,7 +377,7 @@ export const getTransactionsEuro = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsEuro = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_euro",
       params: [
@@ -402,7 +400,7 @@ export const getAddrTransactionsEuro = async ({ address, count }: { address: str
 
 export const getTransactionsPound = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_pound",
       params: [{ name: "count", value: count }],
@@ -422,7 +420,7 @@ export const getTransactionsPound = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsPound = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_pound",
       params: [
@@ -445,7 +443,7 @@ export const getAddrTransactionsPound = async ({ address, count }: { address: st
 
 export const getTransactionsEGP = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_egp",
       params: [{ name: "count", value: count }],
@@ -465,7 +463,7 @@ export const getTransactionsEGP = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsEGP = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_egp",
       params: [
@@ -488,7 +486,7 @@ export const getAddrTransactionsEGP = async ({ address, count }: { address: stri
 
 export const getTransactionsKSH = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_ksh",
       params: [{ name: "count", value: count }],
@@ -508,7 +506,7 @@ export const getTransactionsKSH = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsKSH = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_ksh",
       params: [
@@ -531,7 +529,7 @@ export const getAddrTransactionsKSH = async ({ address, count }: { address: stri
 
 export const getTransactionsZAR = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_zar",
       params: [{ name: "count", value: count }],
@@ -551,7 +549,7 @@ export const getTransactionsZAR = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsZAR = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_zar",
       params: [
@@ -574,7 +572,7 @@ export const getAddrTransactionsZAR = async ({ address, count }: { address: stri
 
 export const getTransactionsETH = async ({ count }: { count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_eth",
       params: [{ name: "count", value: count }],
@@ -594,7 +592,7 @@ export const getTransactionsETH = async ({ count }: { count: number }) => {
 
 export const getAddrTransactionsETH = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_eth",
       params: [
@@ -617,7 +615,7 @@ export const getAddrTransactionsETH = async ({ address, count }: { address: stri
 
 export const getTransactionsRange = async ({ start, end }: { start: number, end: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "gettransactions_range",
       params: [
@@ -640,7 +638,7 @@ export const getTransactionsRange = async ({ start, end }: { start: number, end:
 
 export const getAddrTransactionsAuth = async ({ address, count }: { address: string, count: number }) => {
   try {
-    const url = `${BASE_URL}/api/query/`;
+    const url = `${getBaseURL()}/api/query/`;
     const data = {
       op: "getaddrtransactions_auth",
       params: [
@@ -661,10 +659,57 @@ export const getAddrTransactionsAuth = async ({ address, count }: { address: str
   }
 };
 
+/**
+ * Get address transactions with date range and token filter
+ * Operation: getaddrtransactions_range
+ */
+export const getAddrTransactionsRange = async ({
+  address,
+  count,
+  start,
+  startDate,
+  endDate,
+  token,
+}: {
+  address: string;
+  count?: number;
+  start?: number;
+  startDate?: string; // Format: YYYY-MM-DD
+  endDate?: string; // Format: YYYY-MM-DD
+  token?: string; // Optional token filter (e.g., "NGN", "USD")
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/query`;
+    const params: Array<{ name: string; value: string | number }> = [
+      { name: "addr", value: address },
+    ];
+    if (count !== undefined) params.push({ name: "count", value: count });
+    if (start !== undefined) params.push({ name: "start", value: start });
+    if (startDate) params.push({ name: "startdate", value: startDate });
+    if (endDate) params.push({ name: "enddate", value: endDate });
+    if (token) params.push({ name: "token", value: token });
+
+    const data = {
+      op: "getaddrtransactions_range",
+      params,
+    };
+    const config = {
+      method: "get",
+      url: url,
+      headers: { "Content-Type": "application/json" },
+      data: data,
+    };
+    const response = await axios(config);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response ? error.response.data : error.message);
+  }
+};
+
 // isaddress utility endpoint
 export const isAddress = async ({ address }: { address: string }) => {
   try {
-    const url = `${BASE_URL}/api/util/`;
+    const url = `${getBaseURL()}/api/util/`;
     const data = {
       op: "isaddress",
       params: [{ name: "address", value: address }],
