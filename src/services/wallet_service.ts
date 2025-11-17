@@ -1,5 +1,5 @@
-import { createKeystore, setName, isNameUsed } from "../api/index";
-import { CreateKeystoreInput, SetNameInput } from "../types/api";
+import { createKeystore, setName, isNameUsed, updateKeyPassword, deleteKey } from "../api/index";
+import { CreateKeystoreInput, SetNameInput, UpdateKeyPasswordInput, DeleteKeyInput } from "../types/api";
 import { CreateWalletInput } from "../types/service";
 
 const createWallet = async ({ password, username }: CreateWalletInput) => {
@@ -39,4 +39,22 @@ const isTNSAvailable = async ({ username }: { username: string }) => {
   return !(await isNameUsed(username));
 };
 
-export { createWallet, configureTNS, isTNSAvailable };
+const updatePassword = async ({
+  address,
+  oldPassword,
+  newPassword,
+}: UpdateKeyPasswordInput) => {
+  if (!address || !oldPassword || !newPassword) {
+    throw new Error("Address, old password, and new password are required");
+  }
+  return await updateKeyPassword({ address, oldPassword, newPassword });
+};
+
+const deleteWallet = async ({ address, password }: DeleteKeyInput) => {
+  if (!address || !password) {
+    throw new Error("Address and password are required");
+  }
+  return await deleteKey({ address, password });
+};
+
+export { createWallet, configureTNS, isTNSAvailable, updatePassword, deleteWallet };
