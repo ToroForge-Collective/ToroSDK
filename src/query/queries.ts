@@ -1,4 +1,4 @@
-import {getExchangeRates, getBlocks, getTransactions}  from "../api";
+import {getExchangeRates, getBlocks, getTransactions}  from "../api/query";
 import {
   getAddrRole,
   getAddrBalance,
@@ -61,7 +61,6 @@ const getBlockchainTransactions = async (count: number) => {
 
 // Wrappers for each new endpoint
 const getAddressRole = async (address: string) => getAddrRole({ address });
-const getAddressBalance = async (address: string) => getAddrBalance({ address });
 const getBlockById = async (id: string) => getBlock({ id });
 const getTransactionById = async (id: string) => apiGetTransactionById({ id });
 const getTransactionReceiptById = async (id: string) => getTransactionReceipt({ id });
@@ -94,7 +93,6 @@ export {
   getBlocksData,
   getBlockchainTransactions,
   getAddressRole,
-  getAddressBalance,
   getBlockById,
   getTransactionById,
   getTransactionReceiptById,
