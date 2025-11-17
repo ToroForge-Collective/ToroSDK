@@ -1,6 +1,6 @@
 {
   "name": "torosdk",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A comprehensive Node.js library for interacting with the Toronet blockchain. This package simplifies wallet management, TNS setup, balance queries, fiat deposits, inter-wallet transfers, KYC verification, and smart contract deployment on Toronet's EVM-compatible network. Perfect for developers building blockchain-based applications with Toronet.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
