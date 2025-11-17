@@ -1,9 +1,9 @@
 import axios from "axios";
-import { BASE_URL,  } from "./config";
+import { getBaseURL } from "./config";
 
 export const getStatus = async () => {
   try {
-    const url = `${BASE_URL}/api/blockchain/`;
+    const url = `${getBaseURL()}/api/blockchain/`;
   
 
     const config = {
@@ -14,7 +14,6 @@ export const getStatus = async () => {
       },
     };
     const response = await axios(config);
-    console.dir(response.data, { depth: null });
     return response.data;
   } catch (error: any) {
     console.error(
@@ -27,7 +26,7 @@ export const getStatus = async () => {
 
 export const getLatestBlock = async () => {
   try {
-    const url = `${BASE_URL}/api/blockchain/`;
+    const url = `${getBaseURL()}/api/blockchain/`;
     const data = {
       op: "getblock",
       params: [{ name: "id", value: "latest" }],
@@ -40,7 +39,6 @@ export const getLatestBlock = async () => {
       },
     };
     const response = await axios(config);
-    console.dir(response.data, { depth: null });
     return response.data;
   } catch (error: any) {
     console.error(
@@ -53,7 +51,7 @@ export const getLatestBlock = async () => {
 
 export const getTransaction = async (txHash: string) => {
   try {
-    const url = `${BASE_URL}/api/blockchain/`;
+    const url = `${getBaseURL()}/api/blockchain/`;
     const data = {
       op: "gettransaction",
       params: [{ name: "id", value: txHash }],
@@ -75,7 +73,7 @@ export const getTransaction = async (txHash: string) => {
 
 export const getReceipt = async (txHash: string) => {
   try {
-    const url = `${BASE_URL}/api/blockchain/`;
+    const url = `${getBaseURL()}/api/blockchain/`;
     const data = {
       op: "getreceipt",
       params: [{ name: "id", value: txHash }],
@@ -97,7 +95,7 @@ export const getReceipt = async (txHash: string) => {
 
 export const getRevertReason = async (txHash: string) => {
   try {
-    const url = `${BASE_URL}/api/blockchain/`;
+    const url = `${getBaseURL()}/api/blockchain/`;
     const data = {
       op: "getrevertreason",
       params: [{ name: "id", value: txHash }],
