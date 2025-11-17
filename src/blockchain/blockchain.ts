@@ -1,4 +1,4 @@
-import { getLatestBlock, getStatus } from "../api";
+import { getLatestBlock, getStatus } from "../api/blockchain";
 import { getTransaction as apiGetTransaction, getReceipt as apiGetReceipt, getRevertReason as apiGetRevertReason } from "../api/blockchain";
 
 const getBlockchainStatus = async () => {
