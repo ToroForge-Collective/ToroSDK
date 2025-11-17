@@ -1,11 +1,11 @@
 import axios from "axios";
-import { BASE_URL } from "./config";
+import { getBaseURL } from "./config";
 import { CreateKeystoreInput, SetNameInput } from "../types/api";
 
 const createKeystore = async ({
   password,
 }: CreateKeystoreInput): Promise<string> => {
-  const url = `${BASE_URL}/api/keystore`;
+  const url = `${getBaseURL()}/api/keystore`;
   const data = {
     op: "createkey",
     params: [{ name: "pwd", value: password }],
@@ -17,7 +17,7 @@ const createKeystore = async ({
 
 
 const isNameUsed = async (name: string): Promise<boolean> => {
-  const url = `${BASE_URL}/api/tns`;
+  const url = `${getBaseURL()}/api/tns`;
   const data = {
     op: "isnameused",
     params: [{ name: "name", value: name }],
@@ -32,12 +32,11 @@ const isNameUsed = async (name: string): Promise<boolean> => {
     data: data,
   };
   const response = await axios(config);
-   console.dir(response.data, { depth: null });
   return response.data.isused;
 };
 
 const setName = async ({ address, password, username }: SetNameInput) => {
-  const url = `${BASE_URL}/api/tns/cl`;
+  const url = `${getBaseURL()}/api/tns/cl`;
   const data = {
     op: "setname",
     params: [
@@ -46,9 +45,7 @@ const setName = async ({ address, password, username }: SetNameInput) => {
       { name: "name", value: username },
     ],
   };
-  const response =  await axios.post(url, data);
-  console.dir(response.data, { depth: null });
-
+  const response = await axios.post(url, data);
 };
 
 export { createKeystore, setName, isNameUsed };
