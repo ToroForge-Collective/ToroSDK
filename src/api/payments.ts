@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, CONNECTW_URL } from "./config";
+import { getBaseURL, getConnectWURL } from "./config";
 import { InitializeDepositInput, PaymentExtrasInput } from "../types/api";
 import { KYCParams } from "../types/params";
 import { Currency } from "../types/currency";
@@ -15,7 +15,7 @@ const initializeDeposit = async (
   }: InitializeDepositInput,
   extraData?: PaymentExtrasInput
 ) => {
-  const url = `${BASE_URL}/api/payment/toro/`;
+  const url = `${getBaseURL()}/api/payment/toro/`;
   const data = {
     op: "paymentinitialize",
     params: [
@@ -52,7 +52,6 @@ const initializeDeposit = async (
 
   try {
     const response = await axios.post(url, data, config);
-    console.dir(response.data, { depth: null });
     if (!response.data.result) throw new Error(response.data.error);
     return response.data;
   } catch (error: any) {
@@ -63,7 +62,7 @@ const initializeDeposit = async (
 
 // Verify Deposit - Confirms user has completed the transfer
 const verifyDeposit = async (currency: string, txid: string) => {
-  const url = `${BASE_URL}/api/payment/toro/`;
+  const url = `${getBaseURL()}/api/payment/toro/`;
   const data = {
     op: "recordfiattransaction",
     params: [
@@ -75,7 +74,6 @@ const verifyDeposit = async (currency: string, txid: string) => {
 
   try {
     const response = await axios.post(url, data);
-    console.log("Verify Deposit Response:", response.data);
     if (!response.data.result) throw new Error(response.data.error);
     return response.data.result;
   } catch (error: any) {
@@ -97,7 +95,7 @@ const setupKYC = async ({
   adminpwd,
 }: KYCParams) => {
   try {
-    const url = `${BASE_URL}/api/payment/toro/`;
+    const url = `${getBaseURL()}/api/payment/toro/`;
 
     const config = {
       headers: {
@@ -121,7 +119,6 @@ const setupKYC = async ({
     };
 
     const response = await axios.post(url, data, config);
-    console.log("Response:", response.data);
 
     if (response.data.result == false) {
       throw new Error(response.data.error);
@@ -138,12 +135,11 @@ const setupKYC = async ({
 
 const checkAddressVerified = async (address: string) => {
   try {
-    const url = `${CONNECTW_URL}/api/verified/check-kyc`;
+    const url = `${getConnectWURL()}/api/verified/check-kyc`;
     const data = {
       address: address,
     };
     const response = await axios.post(url, data);
-    console.log("Response:", response.data);
     return {
       verified: response.data.verified,
       provider: response.data.provider,
@@ -173,8 +169,7 @@ const makeInterWalletTransfer = async (
     "ZAR": "ZAR",
   };
   const currencyValue = currencyConfig[currencyName];
-  const url = `${BASE_URL}/api/currency/${currencyValue}/cl`;
-  console.log("URL:", url);
+  const url = `${getBaseURL()}/api/currency/${currencyValue}/cl`;
   const data = {
     op: "transfer",
     params: [
@@ -191,6 +186,515 @@ const makeInterWalletTransfer = async (
     throw new Error(response.data.error);
    }
   return response.data;
+};
+
+/**
+ * Get USD bank list
+ * Operation: getbanklist_usd
+ */
+export const getBankListUSD = async ({
+  admin,
+  adminpwd,
+}: {
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const data = {
+      op: "getbanklist_usd",
+      params: [],
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get NGN bank list
+ * Operation: getbanklist_ngn
+ */
+export const getBankListNGN = async ({
+  admin,
+  adminpwd,
+}: {
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const data = {
+      op: "getbanklist_ngn",
+      params: [],
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get fiat transaction by TXID
+ * Operation: getfiattransactions_txid
+ */
+export const getFiatTransactionByTxid = async ({
+  txid,
+  admin,
+  adminpwd,
+}: {
+  txid: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/`;
+    const data = {
+      op: "getfiattransactions_txid",
+      params: [{ name: "txid", value: txid }],
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get fiat withdrawal by TXID
+ * Operation: getfiatwithdrawals_txid
+ */
+export const getFiatWithdrawalByTxid = async ({
+  txid,
+  admin,
+  adminpwd,
+}: {
+  txid: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const data = {
+      op: "getfiatwithdrawals_txid",
+      params: [{ name: "txid", value: txid }],
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Record fiat withdrawal
+ * Operation: recordfiatwithdrawal
+ */
+export const recordFiatWithdrawal = async ({
+  address,
+  password,
+  currency,
+  token,
+  payername,
+  payeremail,
+  payeraddress,
+  payercity,
+  payerstate,
+  payercountry,
+  payerzipcode,
+  payerphone,
+  description,
+  amount,
+  accounttype,
+  bankname,
+  routingno,
+  accountno,
+  expirydate,
+  accountname,
+  recipientstate,
+  recipientzip,
+  recipientphone,
+  admin,
+  adminpwd,
+}: {
+  address: string;
+  password: string;
+  currency: string;
+  token: string;
+  payername: string;
+  payeremail: string;
+  payeraddress?: string;
+  payercity?: string;
+  payerstate?: string;
+  payercountry?: string;
+  payerzipcode?: string;
+  payerphone?: string;
+  description: string;
+  amount: string;
+  accounttype: string;
+  bankname: string;
+  routingno: string;
+  accountno: string;
+  expirydate?: string;
+  accountname: string;
+  recipientstate?: string;
+  recipientzip?: string;
+  recipientphone?: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const params: Array<{ name: string; value: string }> = [
+      { name: "addr", value: address },
+      { name: "pwd", value: password },
+      { name: "currency", value: currency },
+      { name: "token", value: token },
+      { name: "payername", value: payername },
+      { name: "payeremail", value: payeremail },
+      { name: "description", value: description },
+      { name: "amount", value: amount },
+      { name: "accounttype", value: accounttype },
+      { name: "bankname", value: bankname },
+      { name: "routingno", value: routingno },
+      { name: "accountno", value: accountno },
+      { name: "accountname", value: accountname },
+    ];
+
+    if (payeraddress) params.push({ name: "payeraddress", value: payeraddress });
+    if (payercity) params.push({ name: "payercity", value: payercity });
+    if (payerstate) params.push({ name: "payerstate", value: payerstate });
+    if (payercountry) params.push({ name: "payercountry", value: payercountry });
+    if (payerzipcode) params.push({ name: "payerzipcode", value: payerzipcode });
+    if (payerphone) params.push({ name: "payerphone", value: payerphone });
+    if (expirydate) params.push({ name: "expirydate", value: expirydate });
+    if (recipientstate) params.push({ name: "recipientstate", value: recipientstate });
+    if (recipientzip) params.push({ name: "recipientzip", value: recipientzip });
+    if (recipientphone) params.push({ name: "recipientphone", value: recipientphone });
+
+    const data = {
+      op: "recordfiatwithdrawal",
+      params,
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    if (!response.data.result) throw new Error(response.data.error);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Verify NGN bank account name
+ * Operation: verifybankaccountname_ngn
+ */
+export const verifyBankAccountNameNGN = async ({
+  destinationInstitutionCode,
+  accountNumber,
+  admin,
+  adminpwd,
+}: {
+  destinationInstitutionCode: string;
+  accountNumber: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const data = {
+      op: "verifybankaccountname_ngn",
+      params: [
+        { name: "destinationInstitutionCode", value: destinationInstitutionCode },
+        { name: "accountNumber", value: accountNumber },
+      ],
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get pending transaction status
+ * Operation: getpendingtransaction
+ */
+export const getPendingTransaction = async ({
+  txid,
+  admin,
+  adminpwd,
+}: {
+  txid: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    // Note: This endpoint uses toronet.connectw.com according to Postman collection
+    const url = `https://toronet.connectw.com/api/payment/toro/`;
+    const data = {
+      op: "getpendingtransaction",
+      params: [{ name: "txid", value: txid }],
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get fiat transactions by address and date range
+ * Operation: getfiattransactions_address_range
+ */
+export const getFiatTransactionsAddressRange = async ({
+  address,
+  startDate,
+  endDate,
+  currency,
+  token,
+  admin,
+  adminpwd,
+}: {
+  address: string;
+  startDate: string; // Format: YYYY-MM-DD
+  endDate: string; // Format: YYYY-MM-DD
+  currency?: string;
+  token?: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const params: Array<{ name: string; value: string }> = [
+      { name: "addr", value: address },
+      { name: "startdate", value: startDate },
+      { name: "enddate", value: endDate },
+    ];
+    if (currency) params.push({ name: "currency", value: currency });
+    if (token) params.push({ name: "token", value: token });
+
+    const data = {
+      op: "getfiattransactions_address_range",
+      params,
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get fiat withdrawals by address and date range
+ * Operation: getfiatwithdrawals_address_range
+ */
+export const getFiatWithdrawalsAddressRange = async ({
+  address,
+  startDate,
+  endDate,
+  currency,
+  token,
+  admin,
+  adminpwd,
+}: {
+  address: string;
+  startDate: string; // Format: YYYY-MM-DD
+  endDate: string; // Format: YYYY-MM-DD
+  currency?: string;
+  token?: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const params: Array<{ name: string; value: string }> = [
+      { name: "addr", value: address },
+      { name: "startdate", value: startDate },
+      { name: "enddate", value: endDate },
+    ];
+    if (currency) params.push({ name: "currency", value: currency });
+    if (token) params.push({ name: "token", value: token });
+
+    const data = {
+      op: "getfiatwithdrawals_address_range",
+      params,
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get fiat transactions by recorder and date range
+ * Operation: getfiattransactions_recorder_range
+ */
+export const getFiatTransactionsRecorderRange = async ({
+  address,
+  startDate,
+  endDate,
+  currency,
+  admin,
+  adminpwd,
+}: {
+  address: string;
+  startDate: string; // Format: YYYY-MM-DD
+  endDate: string; // Format: YYYY-MM-DD
+  currency?: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const params: Array<{ name: string; value: string }> = [
+      { name: "addr", value: address },
+      { name: "startdate", value: startDate },
+      { name: "enddate", value: endDate },
+    ];
+    if (currency) params.push({ name: "currency", value: currency });
+
+    const data = {
+      op: "getfiattransactions_recorder_range",
+      params,
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Get fiat withdrawals by recorder and date range
+ * Operation: getfiatwithdrawals_recorder_range
+ */
+export const getFiatWithdrawalsRecorderRange = async ({
+  address,
+  startDate,
+  endDate,
+  currency,
+  token,
+  admin,
+  adminpwd,
+}: {
+  address: string;
+  startDate: string; // Format: YYYY-MM-DD
+  endDate: string; // Format: YYYY-MM-DD
+  currency?: string;
+  token?: string;
+  admin: string;
+  adminpwd: string;
+}) => {
+  try {
+    const url = `${getBaseURL()}/api/payment/toro/`;
+    const params: Array<{ name: string; value: string }> = [
+      { name: "addr", value: address },
+      { name: "startdate", value: startDate },
+      { name: "enddate", value: endDate },
+    ];
+    if (currency) params.push({ name: "currency", value: currency });
+    if (token) params.push({ name: "token", value: token });
+
+    const data = {
+      op: "getfiatwithdrawals_recorder_range",
+      params,
+    };
+    const config = {
+      headers: {
+        admin,
+        adminpwd,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(url, data, config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
 };
 
 export {
