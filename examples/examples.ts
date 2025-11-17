@@ -24,6 +24,7 @@ import {
   updatePassword,
   deleteWallet,
   getBalance,
+  getAddressBalance,
   depositFunds,
   confirmDeposit,
   performKYCForCustomer,
@@ -54,7 +55,6 @@ import {
   getBlocksData,
   getBlockchainTransactions,
   getAddressRole,
-  getAddressBalance,
   getBlockById,
   getTransactionById,
   getTransactionReceiptById,
@@ -453,7 +453,7 @@ async function main() {
     console.log("✓ Address role:", addrRole);
 
     // Get address balance
-    const addrBalance = await getAddressBalance(address!);
+    const addrBalance = await getAddressBalance({ address: address! });
     console.log("✓ Address balance retrieved");
 
     // Get block by ID
