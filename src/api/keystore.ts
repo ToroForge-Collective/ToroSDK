@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "./config";
+import { getBaseURL } from "./config";
 
 export const importKey = async ({
   privateKey,
@@ -8,7 +8,7 @@ export const importKey = async ({
   privateKey: string;
   password: string;
 }) => {
-  const url = `${BASE_URL}/api/keystore/`;
+  const url = `${getBaseURL()}/api/keystore/`;
   const data = {
     op: "importkey",
     params: [
@@ -19,7 +19,6 @@ export const importKey = async ({
 
   try {
     const response = await axios.post(url, data);
-    console.dir(response.data, { depth: null });
     if (!response.data.result) throw new Error(response.data.error);
     return response.data.address;
   } catch (error: any) {
@@ -35,7 +34,7 @@ export const verifyKey = async ({
   address: string;
   password: string;
 }): Promise<Boolean> => {
-  const url = `${BASE_URL}/api/keystore/`;
+  const url = `${getBaseURL()}/api/keystore/`;
   const data = {
     op: "verifykey",
     params: [
@@ -46,7 +45,6 @@ export const verifyKey = async ({
 
   try {
     const response = await axios.post(url, data);
-    console.dir(response.data, { depth: null });
     if (!response.data.result) throw new Error(response.data.error);
     return response.data.result;
   } catch (error: any) {
@@ -56,7 +54,7 @@ export const verifyKey = async ({
 };
 
 export const getKey = async ({ address }: { address: string }) => {
-  const url = `${BASE_URL}/api/keystore/`;
+  const url = `${getBaseURL()}/api/keystore/`;
   const data = {
     op: "getkey",
     params: [{ name: "addr", value: address }],
@@ -71,7 +69,6 @@ export const getKey = async ({ address }: { address: string }) => {
   };
   try {
     const response = await axios(config);
-    console.dir(response.data, { depth: null });
     if (!response.data.keystoredata) throw new Error(response.data.error);
     return response.data.keystoredata;
   } catch (error: any) {
@@ -80,5 +77,68 @@ export const getKey = async ({ address }: { address: string }) => {
       error.response ? error.response.data : error.message
     );
     throw new Error(error.response ? error.response.data : error.message);
+  }
+};
+
+/**
+ * Update keystore password
+ * Operation: updatekeypwd
+ */
+export const updateKeyPassword = async ({
+  address,
+  oldPassword,
+  newPassword,
+}: {
+  address: string;
+  oldPassword: string;
+  newPassword: string;
+}) => {
+  const url = `${getBaseURL()}/api/keystore`;
+  const data = {
+    op: "updatekeypwd",
+    params: [
+      { name: "addr", value: address },
+      { name: "oldpwd", value: oldPassword },
+      { name: "newpwd", value: newPassword },
+    ],
+  };
+
+  try {
+    const response = await axios.post(url, data);
+    if (!response.data.result) throw new Error(response.data.error || "Failed to update password");
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+
+/**
+ * Delete keystore from server
+ * Operation: deletekey
+ */
+export const deleteKey = async ({
+  address,
+  password,
+}: {
+  address: string;
+  password: string;
+}) => {
+  const url = `${getBaseURL()}/api/keystore`;
+  const data = {
+    op: "deletekey",
+    params: [
+      { name: "addr", value: address },
+      { name: "pwd", value: password },
+    ],
+  };
+
+  try {
+    const response = await axios.post(url, data);
+    if (!response.data.result) throw new Error(response.data.error || "Failed to delete keystore");
+    return response.data;
+  } catch (error: any) {
+    console.error("Error:", error.response?.data || error.message);
+    throw new Error(error.response?.data || error.message);
   }
 };
