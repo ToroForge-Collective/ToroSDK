@@ -11,11 +11,18 @@
     "url": "https://github.com/ToroForge-Collective/ToroSDK.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"No tests specified\"",
     "build": "tsup"
   },
-  "keywords": [],
-  "author": "toroforge-collective",
+  "keywords": ["toronet", "blockchain", "wallet", "sdk", "crypto", "ethereum", "evm"],
+  "files": ["dist", "README.md"],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": {
+    "name": "toroforge-collective",
+    "url": "https://github.com/ToroForge-Collective"
+  },
   "license": "MIT",
   "devDependencies": {
     "tsup": "^8.3.5",
