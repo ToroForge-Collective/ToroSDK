@@ -9,3 +9,4 @@ export * from './role';
 export * from './token';
 export * from './product';
 export * from './query';
+export * from './bridge';
