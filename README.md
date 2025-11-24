@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet blockchain. It empowers developers to manage wallets, query blockchain data, handle fiat transactions, verify user identity, manage virtual wallets, and more — all from a developer-friendly interface.
+The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet blockchain. It empowers developers to manage wallets, query blockchain data, handle fiat transactions, verify user identity, manage virtual wallets, bridge tokens from multiple chains (Solana, Base, Polygon, BSC, Arbitrum), and more — all from a developer-friendly interface.
 
 ---
 
