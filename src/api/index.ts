@@ -9,3 +9,4 @@ export * from "./roles";
 export * from "./token";
 export * from "./currency";
 export * from "./products";
+export * from "./bridge";
