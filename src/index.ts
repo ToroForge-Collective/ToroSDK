@@ -1,6 +1,7 @@
 export * from './services/balance_service'
 export * from './services/wallet_service'
 export * from './services/payments_service'
+export * from './services/bridge_service'
 export * from './types/currency'
 export * from './types/params'
 export * from './types/api'
