@@ -84,6 +84,14 @@ The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet b
   - Address transactions with date range and token filtering.
   - Pagination support.
 
+- **Multi-Chain Bridge Support**
+  - Bridge tokens from Solana, Base, Polygon, BSC, and Arbitrum to Toronet.
+  - Query balances and transactions on external chains.
+  - Transfer tokens on supported chains.
+  - Initialize crypto deposits from external blockchains.
+  - Get bridge fee estimates.
+  - Solana-specific operations (address creation, validation, SPL token transfers).
+
 ---
 
 ## Installation
@@ -726,6 +734,178 @@ const transactions = await getAddrTransactionsRange({
 
 ---
 
+### 🌉 Multi-Chain Bridge Operations
+
+The SDK supports bridging tokens from multiple blockchain networks to Toronet. Supported chains include Solana, Base, Polygon, BSC, and Arbitrum.
+
+#### Solana Bridge Operations
+
+```typescript
+import {
+  getSolBalance,
+  getSolTokenBalance,
+  transferSolana,
+  transferSolToken,
+  bridgeTokenSol,
+  getBridgeTokenFeeSol,
+  isValidSolanaAddress,
+  BridgeNetwork
+} from "torosdk";
+
+// Validate Solana address
+const isValid = await isValidSolanaAddress("3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w");
+
+// Get SOL balance
+const solBalance = await getSolBalance({
+  address: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w"
+});
+
+// Get USDC balance on Solana
+const usdcBalance = await getSolTokenBalance({
+  address: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w",
+  contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+});
+
+// Bridge USDC from Solana to Toronet
+await bridgeTokenSol({
+  from: "0xYourToronetAddress",
+  pwd: "YourPassword",
+  network: BridgeNetwork.Solana,
+  contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  tokenname: "USDC",
+  amount: "100"
+});
+```
+
+#### EVM Chain Bridge Operations (Base, Polygon, BSC, Arbitrum)
+
+```typescript
+import {
+  getBalanceBase,
+  getTokenBalanceBase,
+  bridgeTokenBase,
+  getBalancePolygon,
+  getTokenBalancePolygon,
+  bridgeTokenPolygon,
+  getBalanceBSC,
+  getTokenBalanceBSC,
+  bridgeTokenBSC,
+  getBalanceArbitrum,
+  getTokenBalanceArbitrum,
+  bridgeTokenArbitrum,
+  BridgeNetwork
+} from "torosdk";
+
+// Get balance on Base
+const baseBalance = await getBalanceBase({
+  address: "0xff9602fd3a10038ac2b6d9b03277dc5c7d154ada"
+});
+
+// Get USDC balance on Polygon
+const polyUSDC = await getTokenBalancePolygon({
+  address: "0xff9602fd3a10038ac2b6d9b03277dc5c7d154ada",
+  contractaddress: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+  tokenname: "USDC"
+});
+
+// Bridge USDC from Polygon to Toronet
+await bridgeTokenPolygon({
+  from: "0xYourToronetAddress",
+  pwd: "YourPassword",
+  network: BridgeNetwork.Polygon,
+  contractaddress: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+  tokenname: "USDC",
+  amount: "50"
+});
+
+// Bridge USDT from BSC to Toronet
+await bridgeTokenBSC({
+  from: "0xYourToronetAddress",
+  pwd: "YourPassword",
+  network: BridgeNetwork.BSC,
+  contractaddress: "0x55d398326f99059ff775485246999027b3197955",
+  tokenname: "USDT",
+  amount: "100"
+});
+```
+
+#### Using Generic Bridge Functions
+
+```typescript
+import {
+  getBridgeBalance,
+  getBridgeTokenBalance,
+  getBridgeTransactions,
+  getBridgeTokenTransactions,
+  bridgeTokenFromChain,
+  getBridgeTokenFeeEstimate,
+  BridgeNetwork
+} from "torosdk";
+
+// Get balance on any supported external chain
+const balance = await getBridgeBalance(BridgeNetwork.Base, {
+  address: "0xff9602fd3a10038ac2b6d9b03277dc5c7d154ada"
+});
+
+// Get token balance on external chain
+const tokenBalance = await getBridgeTokenBalance(BridgeNetwork.Polygon, {
+  address: "0xff9602fd3a10038ac2b6d9b03277dc5c7d154ada",
+  contractaddress: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+  tokenname: "USDC"
+});
+
+// Get transactions on external chain
+const transactions = await getBridgeTransactions(BridgeNetwork.BSC, {
+  address: "0xff9602fd3a10038ac2b6d9b03277dc5c7d154ada"
+});
+
+// Bridge token from any external chain to Toronet
+await bridgeTokenFromChain(BridgeNetwork.Arbitrum, {
+  from: "0xYourToronetAddress",
+  pwd: "YourPassword",
+  network: BridgeNetwork.Arbitrum,
+  contractaddress: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+  tokenname: "USDC",
+  amount: "75"
+});
+
+// Get bridge fee estimate
+const fee = await getBridgeTokenFeeEstimate(BridgeNetwork.Base, {
+  network: BridgeNetwork.Base,
+  contractaddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  amount: "50"
+});
+```
+
+#### Crypto Payment Initialization
+
+```typescript
+import {
+  paymentInitializeCrypto,
+  recordCryptoPayment
+} from "torosdk";
+
+// Initialize crypto deposit from Solana
+const deposit = await paymentInitializeCrypto({
+  address: "0xYourToronetAddress",
+  pwd: "YourPassword",
+  currency: "USDCSOL", // Currency codes: USDCSOL, USDTBSC, USDCPOLY, USDCARB, USDCBASE
+  token: "TORO",
+  amount: "100",
+  paymenttype: "crypto"
+}, "0xAdminAddress", "adminPassword");
+
+// Record completed crypto payment
+await recordCryptoPayment({
+  currency: "USDCSOL",
+  txid: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w_8e21df8325dc5e88"
+}, "0xAdminAddress", "adminPassword");
+```
+
+For more detailed bridge examples, see [CODE_SAMPLES.md](CODE_SAMPLES.md#multi-chain-bridge-operations).
+
+---
+
 ## Supported Currencies
 
 ```typescript
@@ -751,7 +931,14 @@ src/
 │   ├── blockchain.ts        
 │   ├── keystore.ts          
 │   ├── payments.ts          
-│   ├── kyc.ts               
+│   ├── bridge/              # Multi-chain bridge operations
+│   │   ├── solana.ts        # Solana bridge operations
+│   │   ├── base.ts          # Base chain operations
+│   │   ├── polygon.ts       # Polygon chain operations
+│   │   ├── bsc.ts           # BSC chain operations
+│   │   ├── arbitrum.ts      # Arbitrum chain operations
+│   │   ├── payments.ts      # Crypto payment operations
+│   │   └── index.ts         
 │   └── config.ts            
 │
 ├── query/                  # On-chain data queries
@@ -761,14 +948,14 @@ src/
 │   ├── walletService.ts    
 │   ├── balanceService.ts   
 │   ├── paymentService.ts   
-│   ├── kycService.ts       
-│   ├── blockchainService.ts
+│   ├── bridge_service.ts   # Bridge service wrappers
 │   └── utils.ts            
 │
 ├── virtualwallet/          # Virtual wallet business logic
 │   └── virtualwallet.ts    
 │
 ├── types/                  # Global types and enums
+│   └── bridge.ts           # Bridge type definitions
 ├── utils/                 
 ├── index.ts                # SDK entry
 ```
