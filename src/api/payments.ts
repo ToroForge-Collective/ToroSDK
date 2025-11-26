@@ -40,6 +40,7 @@ const initializeDeposit = async (
       { name: "payerzipcode", value: extraData?.payerzipcode ?? "" },
       { name: "payerphone", value: extraData?.payerphone ?? "" },
       { name: "description", value: extraData?.description ?? "Deposit" },
+      { name: "commissionrate", value: extraData?.commissionrate ?? "0" },
     ],
   };
 
