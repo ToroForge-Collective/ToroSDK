@@ -41,6 +41,7 @@ export type PaymentExtrasInput = {
   feetype?: string;
   exchange?: string;
   reusewallet?: string;
+  commissionrate?: string;
 };
 
 export type UpdateKeyPasswordInput = {
