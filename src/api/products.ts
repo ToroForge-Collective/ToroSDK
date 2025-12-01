@@ -4,7 +4,7 @@ import { getConnectWURL } from "./config";
 /**
  * Get project information
  * Operation: getproject
- * Endpoint: https://restapi.connectw.com/api/payment/toro/
+ * Endpoint: https://payments.connectw.com/api/payment/toro/
  */
 export const getProject = async ({
   admin,
@@ -36,7 +36,7 @@ export const getProject = async ({
 /**
  * Get product by ID
  * Operation: getproduct
- * Endpoint: https://restapi.connectw.com/api/payment/
+ * Endpoint: https://payments.connectw.com/api/payment/
  */
 export const getProduct = async ({
   productId,
@@ -71,7 +71,7 @@ export const getProduct = async ({
 /**
  * Create/Record product
  * Operation: recordproduct
- * Endpoint: https://restapi.connectw.com/api/payment/
+ * Endpoint: https://payments.connectw.com/api/payment/
  */
 export const recordProduct = async ({
   productId,
@@ -118,7 +118,7 @@ export const recordProduct = async ({
 /**
  * Update product
  * Operation: updateproduct
- * Endpoint: https://restapi.connectw.com/api/payment/
+ * Endpoint: https://payments.connectw.com/api/payment/
  */
 export const updateProduct = async ({
   productId,
