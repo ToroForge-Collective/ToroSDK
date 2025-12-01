@@ -3,11 +3,11 @@ import { Network, SDKConfig, SDKConfigOptions } from '../types/config';
 const DEFAULT_NETWORKS: Record<Network, { baseURL: string; connectWURL: string }> = {
   mainnet: {
     baseURL: 'https://www.toronet.org',
-    connectWURL: 'https://restapi.connectw.com'
+    connectWURL: 'https://payments.connectw.com'
   },
   testnet: {
     baseURL: 'http://testnet.toronet.org',
-    connectWURL: 'https://restapi.connectw.com' // ConnectW may not differ by network
+    connectWURL: 'https://payments.connectw.com' // ConnectW may not differ by network
   }
 };
 
