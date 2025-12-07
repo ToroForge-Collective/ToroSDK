@@ -217,6 +217,25 @@ import {
   getFiatWithdrawalsRecorderRange,
 } from "../src/api/payments";
 
+// Solana bridge operations
+import {
+  createSolanaAddress,
+  isValidSolanaAddress,
+  createToronetSolanaAddress,
+  verifySolanaVirtualAddressEnc,
+  verifySolanaVirtualAddress,
+  getSolBalance,
+  getSolTokenBalance,
+  getSolLatestBlock,
+  getSolTransactions,
+  getSolTokenTransactions,
+  transferSolana,
+  transferSolToken,
+  bridgeTokenSol,
+  getBridgeTokenFeeSol
+} from "../src/api/bridge/solana";
+import { BridgeNetwork } from "../src/types/bridge";
+
 // ============================================================================
 // MAIN FUNCTION
 // ============================================================================
@@ -901,6 +920,123 @@ async function main() {
 
   } catch (error: any) {
     console.error("❌ Virtual wallet operations error:", error.message);
+  }
+
+  // ============================================================================
+  // SECTION 13: SOLANA BRIDGE OPERATIONS
+  // ============================================================================
+  console.log("\n=== SECTION 13: SOLANA BRIDGE OPERATIONS ===");
+  console.log("⚠️ NOTE: Some Solana operations require admin credentials");
+
+  try {
+    // Validate Solana address
+    const isValid = await isValidSolanaAddress("3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w");
+    console.log("✓ Is valid Solana address:", isValid);
+
+    // Create a new Solana address (prefer generatevirtualwallet for linking to Toronet)
+    // const solAddress = await createSolanaAddress({
+    //   admin: "0xAdminAddress",
+    //   adminpwd: "adminPassword"
+    // });
+    // console.log("✓ Solana address created:", solAddress);
+
+    // Create a custodial Solana address linked to Toronet address
+    // const toronetSolAddress = await createToronetSolanaAddress({
+    //   addr: address!,
+    //   pwd: password
+    // });
+    // console.log("✓ Toronet-linked Solana address created:", toronetSolAddress);
+
+    // Verify Solana virtual address encryption
+    // const encVerified = await verifySolanaVirtualAddressEnc(
+    //   address!,
+    //   password,
+    //   "0xAdminAddress",
+    //   "adminPassword"
+    // );
+    // console.log("✓ Solana virtual address encryption verified:", encVerified);
+
+    // Verify Solana virtual address (Toronet address)
+    // const addrVerified = await verifySolanaVirtualAddress(
+    //   address!,
+    //   password,
+    //   "0xAdminAddress",
+    //   "adminPassword"
+    // );
+    // console.log("✓ Solana virtual address verified:", addrVerified);
+
+    // Get SOL balance
+    const solBalance = await getSolBalance({
+      address: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w"
+    });
+    console.log("✓ SOL balance retrieved:", solBalance);
+
+    // Get SPL token balance (e.g., USDC on Solana)
+    const usdcBalance = await getSolTokenBalance({
+      address: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w",
+      contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC contract
+    });
+    console.log("✓ USDC balance on Solana retrieved:", usdcBalance);
+
+    // Get latest Solana block
+    const latestBlock = await getSolLatestBlock();
+    console.log("✓ Latest Solana block retrieved:", latestBlock);
+
+    // Get SOL transactions for an address
+    const solTransactions = await getSolTransactions({
+      address: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w"
+    });
+    console.log("✓ SOL transactions retrieved");
+
+    // Get SPL token transactions for an address
+    const tokenTransactions = await getSolTokenTransactions({
+      address: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w",
+      contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    });
+    console.log("✓ USDC transactions on Solana retrieved");
+
+    // Transfer SOL
+    // await transferSolana({
+    //   from: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w",
+    //   to: "2Ha5ETJGGahgeLpqhTiAYWhAtre1bAGaG47zTDPzJcP4",
+    //   amount: "0.1",
+    //   pwd: password
+    // });
+    // console.log("✓ SOL transferred");
+
+    // Transfer SPL token (e.g., USDC)
+    // await transferSolToken({
+    //   from: "3uwR7HMDuK6dXwZAfx8jHwPcyXsYmFuHWJv3zvJxRE9w",
+    //   to: "2Ha5ETJGGahgeLpqhTiAYWhAtre1bAGaG47zTDPzJcP4",
+    //   amount: "10",
+    //   pwd: password,
+    //   contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    //   tokenname: "USDC",
+    //   usetokenasfees: "true" // Use token for fees if not enough SOL
+    // });
+    // console.log("✓ USDC transferred on Solana");
+
+    // Get bridge fee estimate
+    const fee = await getBridgeTokenFeeSol({
+      network: BridgeNetwork.Solana,
+      contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      amount: "100"
+    });
+    console.log("✓ Bridge fee estimate retrieved:", fee);
+
+    // Bridge USDC from Solana to Toronet
+    // await bridgeTokenSol({
+    //   from: address!,
+    //   pwd: password,
+    //   network: BridgeNetwork.Solana,
+    //   contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    //   tokenname: "USDC",
+    //   amount: "100"
+    // });
+    // console.log("✓ USDC bridged from Solana to Toronet");
+
+  } catch (error: any) {
+    console.error("❌ Solana bridge operations error:", error.message);
   }
 
   console.log("\n✅ All examples completed!");
