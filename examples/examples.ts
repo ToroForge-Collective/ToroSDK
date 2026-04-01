@@ -169,6 +169,11 @@ import {
   isTransferOn,
   isMintOn,
   isBurnOn,
+  getAllowSelfEnroll,
+  getAllowSelfTransactionFee,
+  getSelfTransactionFeeFixed,
+  getSelfTransactionFeePercentage,
+  getSelfTransactionFee,
 } from "../src/api/token";
 
 // Currency operations
@@ -235,6 +240,80 @@ import {
   getBridgeTokenFeeSol
 } from "../src/api/bridge/solana";
 import { BridgeNetwork } from "../src/types/bridge";
+
+// Storage operations
+import {
+  isStorageOn,
+  isContractRegistered,
+  getStorageVersion,
+  isOwner,
+  getOwner,
+  setStorageOn,
+  setStorageOff,
+  registerContract,
+  unregisterContract,
+  increaseStorageVersion,
+  decreaseStorageVersion,
+  setStorageVersion,
+  transferOwnership,
+} from "../src/api/storage";
+
+// EVM Bridge chain operations
+import {
+  getBalanceBase,
+  getTokenBalanceBase,
+  getTransactionsBase,
+  getTokenTransactionsBase,
+  bridgeTokenBase,
+  getBridgeTokenFeeBase,
+} from "../src/api/bridge/base";
+
+import {
+  getBalancePolygon,
+  getTokenBalancePolygon,
+  getTransactionsPolygon,
+  getTokenTransactionsPolygon,
+  bridgeTokenPolygon,
+  getBridgeTokenFeePolygon,
+} from "../src/api/bridge/polygon";
+
+import {
+  getBalanceBSC,
+  getTokenBalanceBSC,
+  getTransactionsBSC,
+  getTokenTransactionsBSC,
+  bridgeTokenBSC,
+  getBridgeTokenFeeBSC,
+} from "../src/api/bridge/bsc";
+
+import {
+  getBalanceArbitrum,
+  getTokenBalanceArbitrum,
+  getTransactionsArbitrum,
+  getTokenTransactionsArbitrum,
+  bridgeTokenArbitrum,
+  getBridgeTokenFeeArbitrum,
+} from "../src/api/bridge/arbitrum";
+
+// Bridge Service aggregators
+import {
+  getBridgeBalance,
+  getBridgeTokenBalance,
+  getBridgeTransactions,
+  getBridgeTokenTransactions,
+  bridgeTokenFromChain,
+  getBridgeTokenFeeEstimate,
+} from "../src/services/bridge_service";
+
+// Crypto Bridge Payments
+import {
+  paymentInitializeCrypto,
+  recordCryptoPayment,
+} from "../src/api/bridge/payments";
+
+// Smart Contract Deployment
+import { deploySmartContract } from "../src/services/deployer_service";
+import { DeployContractInput } from "../src/types/deployer";
 
 // ============================================================================
 // MAIN FUNCTION
@@ -582,6 +661,13 @@ async function main() {
     // });
     // console.log("✓ Admin removed");
 
+    // Owner operations: remove all debuggers
+    // await removeAllDebuggers({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    // });
+    // console.log("✓ All debuggers removed");
+
   } catch (error: any) {
     console.error("❌ Role management error:", error.message);
   }
@@ -655,6 +741,22 @@ async function main() {
     const burnOn = await isBurnOn();
     console.log("✓ Burn enabled:", burnOn);
 
+    // Self-enrollment and self-fee queries
+    const allowSelfEnroll = await getAllowSelfEnroll({ address: address! });
+    console.log("✓ Allow self-enroll:", allowSelfEnroll);
+
+    const allowSelfTxFee = await getAllowSelfTransactionFee({ address: address! });
+    console.log("✓ Allow self transaction fee:", allowSelfTxFee);
+
+    const selfFeeFixed = await getSelfTransactionFeeFixed({ address: address! });
+    console.log("✓ Self transaction fee (fixed):", selfFeeFixed);
+
+    const selfFeePercentage = await getSelfTransactionFeePercentage({ address: address! });
+    console.log("✓ Self transaction fee (percentage):", selfFeePercentage);
+
+    const selfFee = await getSelfTransactionFee({ address: address!, amount: "1000" });
+    console.log("✓ Self transaction fee:", selfFee);
+
   } catch (error: any) {
     console.error("❌ Token operations error:", error.message);
   }
@@ -710,6 +812,35 @@ async function main() {
     //   amount: "1000",
     // });
     // console.log("✓ Currency minted");
+
+    // Transaction fee settings (admin operations)
+    // await setTransactionFeeFixed({
+    //   currency: "NGN",
+    //   address: "0xAdminAddress",
+    //   admin: "0xAdminAddress",
+    //   adminpwd: "adminPassword",
+    //   value: "10",
+    // });
+    // console.log("✓ Transaction fee fixed set");
+
+    // await setTransactionFeePercentage({
+    //   currency: "NGN",
+    //   address: "0xAdminAddress",
+    //   admin: "0xAdminAddress",
+    //   adminpwd: "adminPassword",
+    //   value: "1.5",
+    // });
+    // console.log("✓ Transaction fee percentage set");
+
+    // await setTransactionFee({
+    //   currency: "NGN",
+    //   address: "0xAdminAddress",
+    //   admin: "0xAdminAddress",
+    //   adminpwd: "adminPassword",
+    //   fixed: "10",
+    //   percentage: "1.5",
+    // });
+    // console.log("✓ Transaction fee set (fixed + percentage)");
 
   } catch (error: any) {
     console.error("❌ Currency operations error:", error.message);
@@ -824,6 +955,27 @@ async function main() {
     //   adminpwd: "adminPassword",
     // });
     // console.log("✓ Fiat transactions by date range retrieved");
+
+    // Recorder-scoped date range queries
+    // const recorderTxs = await getFiatTransactionsRecorderRange({
+    //   address: address!,
+    //   startDate: "2024-01-01",
+    //   endDate: "2024-12-31",
+    //   currency: "NGN",
+    //   admin: "0xAdminAddress",
+    //   adminpwd: "adminPassword",
+    // });
+    // console.log("✓ Fiat transactions by recorder range retrieved");
+
+    // const recorderWithdrawals = await getFiatWithdrawalsRecorderRange({
+    //   address: address!,
+    //   startDate: "2024-01-01",
+    //   endDate: "2024-12-31",
+    //   currency: "NGN",
+    //   admin: "0xAdminAddress",
+    //   adminpwd: "adminPassword",
+    // });
+    // console.log("✓ Fiat withdrawals by recorder range retrieved");
 
   } catch (error: any) {
     console.error("❌ Payment operations error:", error.message);
@@ -1037,6 +1189,401 @@ async function main() {
 
   } catch (error: any) {
     console.error("❌ Solana bridge operations error:", error.message);
+  }
+
+  // ============================================================================
+  // SECTION 14: STORAGE OPERATIONS
+  // ============================================================================
+  console.log("\n=== SECTION 14: STORAGE OPERATIONS ===");
+  console.log("⚠️ NOTE: Owner operations require storage contract ownership");
+
+  try {
+    // Query operations
+    const storageOn = await isStorageOn();
+    console.log("✓ Storage enabled:", storageOn);
+
+    const storageVersion = await getStorageVersion();
+    console.log("✓ Storage version:", storageVersion);
+
+    const storageOwner = await getOwner();
+    console.log("✓ Storage owner:", storageOwner);
+
+    const isOwnerAddr = await isOwner({ address: address! });
+    console.log("✓ Is storage owner:", isOwnerAddr);
+
+    const isRegistered = await isContractRegistered({ contract: "0xContractAddress" });
+    console.log("✓ Contract registered:", isRegistered);
+
+    // Owner operations (requires storage contract ownership)
+    // await setStorageOn({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    // });
+    // console.log("✓ Storage enabled");
+
+    // await setStorageOff({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    // });
+    // console.log("✓ Storage disabled");
+
+    // await registerContract({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    //   contract: "0xContractAddress",
+    // });
+    // console.log("✓ Contract registered");
+
+    // await unregisterContract({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    //   contract: "0xContractAddress",
+    // });
+    // console.log("✓ Contract unregistered");
+
+    // await increaseStorageVersion({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    // });
+    // console.log("✓ Storage version increased");
+
+    // await decreaseStorageVersion({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    // });
+    // console.log("✓ Storage version decreased");
+
+    // await setStorageVersion({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    //   version: 5,
+    // });
+    // console.log("✓ Storage version set");
+
+    // await transferOwnership({
+    //   address: "0xOwnerAddress",
+    //   password: "ownerPassword",
+    //   newOwner: "0xNewOwnerAddress",
+    // });
+    // console.log("✓ Storage ownership transferred");
+
+  } catch (error: any) {
+    console.error("❌ Storage operations error:", error.message);
+  }
+
+  // ============================================================================
+  // SECTION 15: EVM BRIDGE CHAIN OPERATIONS
+  // ============================================================================
+  console.log("\n=== SECTION 15: EVM BRIDGE CHAIN OPERATIONS ===");
+  console.log("⚠️ NOTE: Bridge operations may require admin credentials");
+
+  try {
+    const evmAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18";
+    const usdcContract = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+
+    // --- Base Chain ---
+    const baseBalance = await getBalanceBase({ address: evmAddress });
+    console.log("✓ Base native balance:", baseBalance);
+
+    const baseTokenBalance = await getTokenBalanceBase({
+      address: evmAddress,
+      contractaddress: usdcContract,
+      tokenname: "USDC",
+    });
+    console.log("✓ Base token balance:", baseTokenBalance);
+
+    const baseTxs = await getTransactionsBase({ address: evmAddress });
+    console.log("✓ Base transactions retrieved");
+
+    const baseTokenTxs = await getTokenTransactionsBase({
+      address: evmAddress,
+      contractaddress: usdcContract,
+    });
+    console.log("✓ Base token transactions retrieved");
+
+    const baseFee = await getBridgeTokenFeeBase({
+      network: BridgeNetwork.Base,
+      contractaddress: usdcContract,
+      amount: "100",
+    });
+    console.log("✓ Base bridge fee:", baseFee);
+
+    // await bridgeTokenBase({
+    //   from: address!,
+    //   pwd: password,
+    //   network: BridgeNetwork.Base,
+    //   contractaddress: usdcContract,
+    //   tokenname: "USDC",
+    //   amount: "100",
+    // });
+    // console.log("✓ Token bridged from Base");
+
+    // --- Polygon Chain ---
+    const polyBalance = await getBalancePolygon({ address: evmAddress });
+    console.log("✓ Polygon native balance:", polyBalance);
+
+    const polyTokenBalance = await getTokenBalancePolygon({
+      address: evmAddress,
+      contractaddress: usdcContract,
+      tokenname: "USDC",
+    });
+    console.log("✓ Polygon token balance:", polyTokenBalance);
+
+    const polyTxs = await getTransactionsPolygon({ address: evmAddress });
+    console.log("✓ Polygon transactions retrieved");
+
+    const polyTokenTxs = await getTokenTransactionsPolygon({
+      address: evmAddress,
+      contractaddress: usdcContract,
+    });
+    console.log("✓ Polygon token transactions retrieved");
+
+    const polyFee = await getBridgeTokenFeePolygon({
+      network: BridgeNetwork.Polygon,
+      contractaddress: usdcContract,
+      amount: "100",
+    });
+    console.log("✓ Polygon bridge fee:", polyFee);
+
+    // await bridgeTokenPolygon({
+    //   from: address!,
+    //   pwd: password,
+    //   network: BridgeNetwork.Polygon,
+    //   contractaddress: usdcContract,
+    //   tokenname: "USDC",
+    //   amount: "100",
+    // });
+    // console.log("✓ Token bridged from Polygon");
+
+    // --- BSC Chain ---
+    const bscBalance = await getBalanceBSC({ address: evmAddress });
+    console.log("✓ BSC native balance:", bscBalance);
+
+    const bscTokenBalance = await getTokenBalanceBSC({
+      address: evmAddress,
+      contractaddress: usdcContract,
+      tokenname: "USDC",
+    });
+    console.log("✓ BSC token balance:", bscTokenBalance);
+
+    const bscTxs = await getTransactionsBSC({ address: evmAddress });
+    console.log("✓ BSC transactions retrieved");
+
+    const bscTokenTxs = await getTokenTransactionsBSC({
+      address: evmAddress,
+      contractaddress: usdcContract,
+    });
+    console.log("✓ BSC token transactions retrieved");
+
+    const bscFee = await getBridgeTokenFeeBSC({
+      network: BridgeNetwork.BSC,
+      contractaddress: usdcContract,
+      amount: "100",
+    });
+    console.log("✓ BSC bridge fee:", bscFee);
+
+    // await bridgeTokenBSC({
+    //   from: address!,
+    //   pwd: password,
+    //   network: BridgeNetwork.BSC,
+    //   contractaddress: usdcContract,
+    //   tokenname: "USDC",
+    //   amount: "100",
+    // });
+    // console.log("✓ Token bridged from BSC");
+
+    // --- Arbitrum Chain ---
+    const arbBalance = await getBalanceArbitrum({ address: evmAddress });
+    console.log("✓ Arbitrum native balance:", arbBalance);
+
+    const arbTokenBalance = await getTokenBalanceArbitrum({
+      address: evmAddress,
+      contractaddress: usdcContract,
+      tokenname: "USDC",
+    });
+    console.log("✓ Arbitrum token balance:", arbTokenBalance);
+
+    const arbTxs = await getTransactionsArbitrum({ address: evmAddress });
+    console.log("✓ Arbitrum transactions retrieved");
+
+    const arbTokenTxs = await getTokenTransactionsArbitrum({
+      address: evmAddress,
+      contractaddress: usdcContract,
+    });
+    console.log("✓ Arbitrum token transactions retrieved");
+
+    const arbFee = await getBridgeTokenFeeArbitrum({
+      network: BridgeNetwork.Arbitrum,
+      contractaddress: usdcContract,
+      amount: "100",
+    });
+    console.log("✓ Arbitrum bridge fee:", arbFee);
+
+    // await bridgeTokenArbitrum({
+    //   from: address!,
+    //   pwd: password,
+    //   network: BridgeNetwork.Arbitrum,
+    //   contractaddress: usdcContract,
+    //   tokenname: "USDC",
+    //   amount: "100",
+    // });
+    // console.log("✓ Token bridged from Arbitrum");
+
+  } catch (error: any) {
+    console.error("❌ EVM bridge operations error:", error.message);
+  }
+
+  // ============================================================================
+  // SECTION 16: BRIDGE SERVICE (UNIVERSAL AGGREGATOR)
+  // ============================================================================
+  console.log("\n=== SECTION 16: BRIDGE SERVICE (UNIVERSAL AGGREGATOR) ===");
+  console.log("⚠️ NOTE: Use BridgeNetwork enum to specify the target chain");
+
+  try {
+    const evmAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18";
+    const usdcContract = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+
+    // Get balance on any supported chain via universal aggregator
+    const bridgeBalance = await getBridgeBalance(
+      BridgeNetwork.Base,
+      { address: evmAddress }
+    );
+    console.log("✓ Bridge balance (Base):", bridgeBalance);
+
+    // Get token balance on any supported chain
+    const bridgeTokenBal = await getBridgeTokenBalance(
+      BridgeNetwork.Polygon,
+      { address: evmAddress, contractaddress: usdcContract, tokenname: "USDC" }
+    );
+    console.log("✓ Bridge token balance (Polygon):", bridgeTokenBal);
+
+    // Get transactions on any supported chain
+    const bridgeTxs = await getBridgeTransactions(
+      BridgeNetwork.BSC,
+      { address: evmAddress }
+    );
+    console.log("✓ Bridge transactions (BSC):", bridgeTxs);
+
+    // Get token transactions on any supported chain
+    const bridgeTokenTxs = await getBridgeTokenTransactions(
+      BridgeNetwork.Arbitrum,
+      { address: evmAddress, contractaddress: usdcContract }
+    );
+    console.log("✓ Bridge token transactions (Arbitrum):", bridgeTokenTxs);
+
+    // Get bridge fee estimate for any chain
+    const bridgeFee = await getBridgeTokenFeeEstimate(
+      BridgeNetwork.Solana,
+      { network: BridgeNetwork.Solana, contractaddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", amount: "100" }
+    );
+    console.log("✓ Bridge fee estimate (Solana):", bridgeFee);
+
+    // Bridge token from any chain to Toronet
+    // await bridgeTokenFromChain(
+    //   BridgeNetwork.Base,
+    //   {
+    //     from: address!,
+    //     pwd: password,
+    //     network: BridgeNetwork.Base,
+    //     contractaddress: usdcContract,
+    //     tokenname: "USDC",
+    //     amount: "100",
+    //   }
+    // );
+    // console.log("✓ Token bridged via universal aggregator");
+
+  } catch (error: any) {
+    console.error("❌ Bridge service error:", error.message);
+  }
+
+  // ============================================================================
+  // SECTION 17: CRYPTO BRIDGE PAYMENTS
+  // ============================================================================
+  console.log("\n=== SECTION 17: CRYPTO BRIDGE PAYMENTS ===");
+  console.log("⚠️ NOTE: Crypto payment operations require admin credentials");
+
+  try {
+    // Initialize a crypto payment deposit (from external chain to Toronet)
+    // const cryptoPayment = await paymentInitializeCrypto(
+    //   {
+    //     address: address!,
+    //     pwd: password,
+    //     currency: "USDCSOL",      // Source: USDC on Solana
+    //     token: "TORO",            // Target token on Toronet
+    //     amount: "100",
+    //     paymenttype: "crypto",
+    //     description: "Crypto deposit from Solana",
+    //   },
+    //   "0xAdminAddress",
+    //   "adminPassword"
+    // );
+    // console.log("✓ Crypto payment initialized:", cryptoPayment);
+
+    // Record a completed crypto payment
+    // const recorded = await recordCryptoPayment(
+    //   {
+    //     currency: "USDCSOL",
+    //     txid: "5KtPn1LGuxhFiwjxErkxTb3EPMrfCdSjTu8w9..."  // Solana tx signature
+    //   },
+    //   "0xAdminAddress",
+    //   "adminPassword"
+    // );
+    // console.log("✓ Crypto payment recorded:", recorded);
+
+  } catch (error: any) {
+    console.error("❌ Crypto bridge payments error:", error.message);
+  }
+
+  // ============================================================================
+  // SECTION 18: SMART CONTRACT DEPLOYMENT (TOROFORGE)
+  // ============================================================================
+  console.log("\n=== SECTION 18: SMART CONTRACT DEPLOYMENT (TOROFORGE) ===");
+  console.log("⚠️ NOTE: Mainnet deployments require a token from the Toronet team");
+
+  try {
+    // Deploy a contract to testnet
+    // The SDK auto-selects the network from initializeSDK() config,
+    // but you can override per call with the `network` parameter.
+
+    // const sampleABI = [
+    //   {
+    //     inputs: [
+    //       { internalType: "address", name: "_rewardPool", type: "address" },
+    //       { internalType: "address", name: "_revenueShare", type: "address" },
+    //     ],
+    //     stateMutability: "nonpayable",
+    //     type: "constructor",
+    //   },
+    //   // ... rest of ABI
+    // ];
+
+    // const deployResult = await deploySmartContract({
+    //   owner: "",  // Empty string lets the server assign the owner
+    //   constructorArgs: [
+    //     "0x0dCDCeF127786cC71EF6658f24E7268Fe349cCB8",
+    //     "0x0dCDCeF127786cC71EF6658f24E7268Fe349cCB8",
+    //   ],
+    //   abi: sampleABI,
+    //   bytecode: "0x608060...",
+    // });
+    // console.log("✓ Contract deployed at:", deployResult.address);
+    // console.log("✓ ABI with signatures:", deployResult.abi);
+
+    // Deploy to mainnet (requires token)
+    // const mainnetResult = await deploySmartContract({
+    //   owner: "0xYourAddress",
+    //   constructorArgs: [],
+    //   abi: sampleABI,
+    //   bytecode: "0x608060...",
+    //   token: "your-mainnet-deploy-token",
+    //   network: "mainnet",  // Explicit override
+    // });
+    // console.log("✓ Mainnet contract deployed at:", mainnetResult.address);
+
+    console.log("✓ Deployer examples are commented out (requires compiled contract data)");
+
+  } catch (error: any) {
+    console.error("❌ Contract deployment error:", error.message);
   }
 
   console.log("\n✅ All examples completed!");
