@@ -1,13 +1,15 @@
 import { Network, SDKConfig, SDKConfigOptions } from '../types/config';
 
-const DEFAULT_NETWORKS: Record<Network, { baseURL: string; connectWURL: string }> = {
+const DEFAULT_NETWORKS: Record<Network, { baseURL: string; connectWURL: string; deployerURL: string }> = {
   mainnet: {
-    baseURL: 'https://www.toronet.org',
-    connectWURL: 'https://payments.connectw.com'
+    baseURL: 'https://api.toronet.org',
+    connectWURL: 'https://payments.connectw.com',
+    deployerURL: 'https://deployer.toronet.org/api/mainnet'
   },
   testnet: {
     baseURL: 'http://testnet.toronet.org',
-    connectWURL: 'https://payments.connectw.com' // ConnectW may not differ by network
+    connectWURL: 'https://payments.connectw.com', // ConnectW may not differ by network
+    deployerURL: 'https://deployer.toronet.org/api/testnet'
   }
 };
 
@@ -21,7 +23,8 @@ class SDKConfiguration {
     this.config = {
       network,
       baseURL: options.baseURL || networkDefaults.baseURL,
-      connectWURL: options.connectWURL || networkDefaults.connectWURL
+      connectWURL: options.connectWURL || networkDefaults.connectWURL,
+      deployerURL: options.deployerURL || networkDefaults.deployerURL
     };
   }
 
@@ -35,6 +38,10 @@ class SDKConfiguration {
 
   getConnectWURL(): string {
     return this.config.connectWURL;
+  }
+
+  getDeployerURL(): string {
+    return this.config.deployerURL;
   }
 
   getNetwork(): Network {
@@ -51,6 +58,9 @@ class SDKConfiguration {
       if (!options.connectWURL) {
         this.config.connectWURL = networkDefaults.connectWURL;
       }
+      if (!options.deployerURL) {
+        this.config.deployerURL = networkDefaults.deployerURL;
+      }
     }
     
     if (options.baseURL) {
@@ -59,6 +69,10 @@ class SDKConfiguration {
     
     if (options.connectWURL) {
       this.config.connectWURL = options.connectWURL;
+    }
+
+    if (options.deployerURL) {
+      this.config.deployerURL = options.deployerURL;
     }
   }
 }
