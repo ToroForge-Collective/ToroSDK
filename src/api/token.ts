@@ -9,7 +9,7 @@ import { getBaseURL } from "./config";
  */
 export const getTokenBalance = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getbalance",
       params: [{ name: "addr", value: address }],
@@ -33,7 +33,7 @@ export const getTokenBalance = async ({ address }: { address: string }) => {
  */
 export const getTokenName = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getname",
       params: [],
@@ -57,7 +57,7 @@ export const getTokenName = async () => {
  */
 export const getTokenSymbol = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getsymbol",
       params: [],
@@ -81,7 +81,7 @@ export const getTokenSymbol = async () => {
  */
 export const getTokenDecimal = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getdecimal",
       params: [],
@@ -105,7 +105,7 @@ export const getTokenDecimal = async () => {
  */
 export const getMinimumAllowance = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getminimumallowance",
       params: [{ name: "addr", value: address }],
@@ -129,7 +129,7 @@ export const getMinimumAllowance = async ({ address }: { address: string }) => {
  */
 export const getMaximumAllowance = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getmaximumallowance",
       params: [{ name: "addr", value: address }],
@@ -159,7 +159,7 @@ export const getAllowance = async ({
   spender: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getallowance",
       params: [
@@ -186,7 +186,7 @@ export const getAllowance = async ({
  */
 export const getTransactionFeeFixed = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "gettransactionfeefixed",
       params: [],
@@ -210,7 +210,7 @@ export const getTransactionFeeFixed = async () => {
  */
 export const getTransactionFeePercentage = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "gettransactionfeepercentage",
       params: [],
@@ -238,7 +238,7 @@ export const getTransactionFee = async ({
   amount: string | number;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "gettransactionfee",
       params: [{ name: "amount", value: amount.toString() }],
@@ -262,7 +262,7 @@ export const getTransactionFee = async ({
  */
 export const getCommissionAddress = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getcommissionaddress",
       params: [],
@@ -286,7 +286,7 @@ export const getCommissionAddress = async () => {
  */
 export const getCommissionPercentage = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getcommissionpercentage",
       params: [],
@@ -310,7 +310,7 @@ export const getCommissionPercentage = async () => {
  */
 export const getReserve = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getreserve",
       params: [{ name: "addr", value: address }],
@@ -334,7 +334,7 @@ export const getReserve = async ({ address }: { address: string }) => {
  */
 export const getToller = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "gettoller",
       params: [{ name: "addr", value: address }],
@@ -358,7 +358,7 @@ export const getToller = async ({ address }: { address: string }) => {
  */
 export const getTotalCap = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "gettotalcap",
       params: [],
@@ -382,7 +382,7 @@ export const getTotalCap = async () => {
  */
 export const getTotalReserving = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "gettotalreserving",
       params: [],
@@ -406,7 +406,7 @@ export const getTotalReserving = async () => {
  */
 export const getTotalCirculating = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "gettotalcirculating",
       params: [],
@@ -430,7 +430,7 @@ export const getTotalCirculating = async () => {
  */
 export const isEnrolled = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "isenrolled",
       params: [{ name: "addr", value: address }],
@@ -454,7 +454,7 @@ export const isEnrolled = async ({ address }: { address: string }) => {
  */
 export const isFrozen = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "isfrozen",
       params: [{ name: "addr", value: address }],
@@ -478,7 +478,7 @@ export const isFrozen = async ({ address }: { address: string }) => {
  */
 export const getAllowSelfEnroll = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getallowselfenroll",
       params: [{ name: "addr", value: address }],
@@ -506,7 +506,7 @@ export const getAllowSelfTransactionFee = async ({
   address: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getallowselftransactionfee",
       params: [{ name: "addr", value: address }],
@@ -534,7 +534,7 @@ export const getSelfTransactionFeeFixed = async ({
   address: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getselftransactionfeefixed",
       params: [{ name: "addr", value: address }],
@@ -562,7 +562,7 @@ export const getSelfTransactionFeePercentage = async ({
   address: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getselftransactionfeepercentage",
       params: [{ name: "addr", value: address }],
@@ -592,7 +592,7 @@ export const getSelfTransactionFee = async ({
   amount: string | number;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getselftransactionfee",
       params: [
@@ -623,7 +623,7 @@ export const getAllowSelfAllowance = async ({
   address: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getallowselfallowance",
       params: [{ name: "addr", value: address }],
@@ -651,7 +651,7 @@ export const getSelfMinimumAllowance = async ({
   address: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getselfminimumallowance",
       params: [{ name: "addr", value: address }],
@@ -679,7 +679,7 @@ export const getSelfMaximumAllowance = async ({
   address: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getselfmaximumallowance",
       params: [{ name: "addr", value: address }],
@@ -703,7 +703,7 @@ export const getSelfMaximumAllowance = async ({
  */
 export const getSelfAllowance = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "getselfallowance",
       params: [{ name: "addr", value: address }],
@@ -727,7 +727,7 @@ export const getSelfAllowance = async ({ address }: { address: string }) => {
  */
 export const isTransferOn = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "istransferon",
       params: [],
@@ -751,7 +751,7 @@ export const isTransferOn = async () => {
  */
 export const isMintOn = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "isminton",
       params: [],
@@ -775,7 +775,7 @@ export const isMintOn = async () => {
  */
 export const isBurnOn = async () => {
   try {
-    const url = `${getBaseURL()}/api/token/toro`;
+    const url = `${getBaseURL()}/token/toro`;
     const data = {
       op: "isburnon",
       params: [],
