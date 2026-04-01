@@ -3,7 +3,7 @@ import { getBaseURL } from "./config";
 
 export const getStatus = async () => {
   try {
-    const url = `${getBaseURL()}/api/blockchain/`;
+    const url = `${getBaseURL()}/blockchain/`;
   
 
     const config = {
@@ -26,7 +26,7 @@ export const getStatus = async () => {
 
 export const getLatestBlock = async () => {
   try {
-    const url = `${getBaseURL()}/api/blockchain/`;
+    const url = `${getBaseURL()}/blockchain/`;
     const data = {
       op: "getblock",
       params: [{ name: "id", value: "latest" }],
@@ -51,7 +51,7 @@ export const getLatestBlock = async () => {
 
 export const getTransaction = async (txHash: string) => {
   try {
-    const url = `${getBaseURL()}/api/blockchain/`;
+    const url = `${getBaseURL()}/blockchain/`;
     const data = {
       op: "gettransaction",
       params: [{ name: "id", value: txHash }],
@@ -73,7 +73,7 @@ export const getTransaction = async (txHash: string) => {
 
 export const getReceipt = async (txHash: string) => {
   try {
-    const url = `${getBaseURL()}/api/blockchain/`;
+    const url = `${getBaseURL()}/blockchain/`;
     const data = {
       op: "getreceipt",
       params: [{ name: "id", value: txHash }],
@@ -95,7 +95,7 @@ export const getReceipt = async (txHash: string) => {
 
 export const getRevertReason = async (txHash: string) => {
   try {
-    const url = `${getBaseURL()}/api/blockchain/`;
+    const url = `${getBaseURL()}/blockchain/`;
     const data = {
       op: "getrevertreason",
       params: [{ name: "id", value: txHash }],
