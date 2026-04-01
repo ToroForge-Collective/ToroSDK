@@ -3,7 +3,7 @@ import { GetAddressBalanceInput } from "../types/api";
 import { getBaseURL } from "./config";
 
 const getAddressBalance = async ({ address }: GetAddressBalanceInput) => {
-  const url = `${getBaseURL()}/api/query`;
+  const url = `${getBaseURL()}/query`;
   const data = {
     op: "getaddrbalance",
     params: [{ name: "addr", value: address }],
