@@ -8,7 +8,7 @@ export const importKey = async ({
   privateKey: string;
   password: string;
 }) => {
-  const url = `${getBaseURL()}/api/keystore/`;
+  const url = `${getBaseURL()}/keystore/`;
   const data = {
     op: "importkey",
     params: [
@@ -34,7 +34,7 @@ export const verifyKey = async ({
   address: string;
   password: string;
 }): Promise<Boolean> => {
-  const url = `${getBaseURL()}/api/keystore/`;
+  const url = `${getBaseURL()}/keystore/`;
   const data = {
     op: "verifykey",
     params: [
@@ -54,7 +54,7 @@ export const verifyKey = async ({
 };
 
 export const getKey = async ({ address }: { address: string }) => {
-  const url = `${getBaseURL()}/api/keystore/`;
+  const url = `${getBaseURL()}/keystore/`;
   const data = {
     op: "getkey",
     params: [{ name: "addr", value: address }],
@@ -93,7 +93,7 @@ export const updateKeyPassword = async ({
   oldPassword: string;
   newPassword: string;
 }) => {
-  const url = `${getBaseURL()}/api/keystore`;
+  const url = `${getBaseURL()}/keystore`;
   const data = {
     op: "updatekeypwd",
     params: [
@@ -124,7 +124,7 @@ export const deleteKey = async ({
   address: string;
   password: string;
 }) => {
-  const url = `${getBaseURL()}/api/keystore`;
+  const url = `${getBaseURL()}/keystore`;
   const data = {
     op: "deletekey",
     params: [
