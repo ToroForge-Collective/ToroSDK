@@ -1,8 +1,9 @@
 import { getSDKConfig } from '../config/sdk_config';
 
 // Default URLs for backward compatibility
-const DEFAULT_BASE_URL = "https://www.toronet.org";
+const DEFAULT_BASE_URL = "https://api.toronet.org";
 const DEFAULT_CONNECTW_URL = "https://payments.connectw.com";
+const DEFAULT_DEPLOYER_URL = "https://deployer.toronet.org/api/mainnet";
 
 /**
  * Get the base URL for Toronet API
@@ -28,7 +29,16 @@ export function getConnectWURL(): string {
   }
 }
 
+export function getDeployerURL(): string {
+  try {
+    return getSDKConfig().getDeployerURL();
+  } catch {
+    return DEFAULT_DEPLOYER_URL;
+  }
+}
+
 // Export constants for backward compatibility
 // These will use the configured values via getters
 export const BASE_URL = getBaseURL();
 export const CONNECTW_URL = getConnectWURL();
+export const DEPLOYER_URL = getDeployerURL();
