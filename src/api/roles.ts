@@ -9,7 +9,7 @@ import { getBaseURL } from "./config";
  */
 export const isAdmin = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/role/admin`;
+    const url = `${getBaseURL()}/role/admin`;
     const data = {
       op: "isadmin",
       params: [{ name: "addr", value: address }],
@@ -33,7 +33,7 @@ export const isAdmin = async ({ address }: { address: string }) => {
  */
 export const getAdminIndex = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/role/admin`;
+    const url = `${getBaseURL()}/role/admin`;
     const data = {
       op: "getadminindex",
       params: [{ name: "addr", value: address }],
@@ -57,7 +57,7 @@ export const getAdminIndex = async ({ address }: { address: string }) => {
  */
 export const getNumberOfAdmin = async () => {
   try {
-    const url = `${getBaseURL()}/api/role/admin`;
+    const url = `${getBaseURL()}/role/admin`;
     const data = {
       op: "getnumberofadmin",
       params: [],
@@ -81,7 +81,7 @@ export const getNumberOfAdmin = async () => {
  */
 export const getAdminByIndex = async ({ index }: { index: number }) => {
   try {
-    const url = `${getBaseURL()}/api/role/admin`;
+    const url = `${getBaseURL()}/role/admin`;
     const data = {
       op: "getadminbyindex",
       params: [{ name: "index", value: index }],
@@ -111,7 +111,7 @@ export const initAdmin = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/admin/ow`;
+    const url = `${getBaseURL()}/role/admin/ow`;
     const data = {
       op: "initadmin",
       params: [
@@ -141,7 +141,7 @@ export const addAdmin = async ({
   adminAddress: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/admin/sa`;
+    const url = `${getBaseURL()}/role/admin/sa`;
     const data = {
       op: "addadmin",
       params: [
@@ -172,7 +172,7 @@ export const removeAdmin = async ({
   adminAddress: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/admin/sa`;
+    const url = `${getBaseURL()}/role/admin/sa`;
     const data = {
       op: "removeadmin",
       params: [
@@ -201,7 +201,7 @@ export const removeAllAdmins = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/admin/sa`;
+    const url = `${getBaseURL()}/role/admin/sa`;
     const data = {
       op: "removealladmins",
       params: [
@@ -225,7 +225,7 @@ export const removeAllAdmins = async ({
  */
 export const isSuperAdmin = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin`;
+    const url = `${getBaseURL()}/role/superadmin`;
     const data = {
       op: "issuperadmin",
       params: [{ name: "addr", value: address }],
@@ -249,7 +249,7 @@ export const isSuperAdmin = async ({ address }: { address: string }) => {
  */
 export const getSuperAdminIndex = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin`;
+    const url = `${getBaseURL()}/role/superadmin`;
     const data = {
       op: "getsuperadminindex",
       params: [{ name: "addr", value: address }],
@@ -273,7 +273,7 @@ export const getSuperAdminIndex = async ({ address }: { address: string }) => {
  */
 export const getNumberOfSuperAdmin = async () => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin`;
+    const url = `${getBaseURL()}/role/superadmin`;
     const data = {
       op: "getnumberofsuperadmin",
       params: [],
@@ -297,7 +297,7 @@ export const getNumberOfSuperAdmin = async () => {
  */
 export const getSuperAdminByIndex = async ({ index }: { index: number }) => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin`;
+    const url = `${getBaseURL()}/role/superadmin`;
     const data = {
       op: "getsuperadminbyindex",
       params: [{ name: "index", value: index }],
@@ -327,7 +327,7 @@ export const initSuperAdmin = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin/ow`;
+    const url = `${getBaseURL()}/role/superadmin/ow`;
     const data = {
       op: "initsuperadmin",
       params: [
@@ -357,7 +357,7 @@ export const addSuperAdmin = async ({
   superAdminAddress: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin/sa`;
+    const url = `${getBaseURL()}/role/superadmin/sa`;
     const data = {
       op: "addsuperadmin",
       params: [
@@ -388,7 +388,7 @@ export const removeSuperAdmin = async ({
   superAdminAddress: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin/sa`;
+    const url = `${getBaseURL()}/role/superadmin/sa`;
     const data = {
       op: "removesuperadmin",
       params: [
@@ -417,7 +417,7 @@ export const removeAllSuperAdmins = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/superadmin/db`;
+    const url = `${getBaseURL()}/role/superadmin/db`;
     const data = {
       op: "removeallsuperadmins",
       params: [
@@ -441,7 +441,7 @@ export const removeAllSuperAdmins = async ({
  */
 export const isDebugger = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger`;
+    const url = `${getBaseURL()}/role/debugger`;
     const data = {
       op: "isdebugger",
       params: [{ name: "addr", value: address }],
@@ -465,7 +465,7 @@ export const isDebugger = async ({ address }: { address: string }) => {
  */
 export const getDebuggerIndex = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger`;
+    const url = `${getBaseURL()}/role/debugger`;
     const data = {
       op: "getdebuggerindex",
       params: [{ name: "addr", value: address }],
@@ -489,7 +489,7 @@ export const getDebuggerIndex = async ({ address }: { address: string }) => {
  */
 export const getNumberOfDebugger = async () => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger`;
+    const url = `${getBaseURL()}/role/debugger`;
     const data = {
       op: "getnumberofdebugger",
       params: [],
@@ -513,7 +513,7 @@ export const getNumberOfDebugger = async () => {
  */
 export const getDebuggerByIndex = async ({ index }: { index: number }) => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger`;
+    const url = `${getBaseURL()}/role/debugger`;
     const data = {
       op: "getdebuggerbyindex",
       params: [{ name: "index", value: index }],
@@ -543,7 +543,7 @@ export const initDebugger = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger/ow`;
+    const url = `${getBaseURL()}/role/debugger/ow`;
     const data = {
       op: "initdebugger",
       params: [
@@ -573,7 +573,7 @@ export const addDebugger = async ({
   debuggerAddress: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger/db`;
+    const url = `${getBaseURL()}/role/debugger/db`;
     const data = {
       op: "adddebugger",
       params: [
@@ -604,7 +604,7 @@ export const removeDebugger = async ({
   debuggerAddress: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger/db`;
+    const url = `${getBaseURL()}/role/debugger/db`;
     const data = {
       op: "removedebugger",
       params: [
@@ -633,7 +633,7 @@ export const removeAllDebuggers = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/role/debugger/ow`;
+    const url = `${getBaseURL()}/role/debugger/ow`;
     const data = {
       op: "removealldebuggers",
       params: [
