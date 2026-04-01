@@ -1,35 +1,50 @@
 import {
   confirmDeposit,
+  createWallet,
   depositFunds,
   getFiatTransactionByTxid,
   getSupportedAssetsExchangeRates,
   isAddressKYCVerified,
+  isTNSAvailable,
 } from "../src";
 import { Currency } from "../src/types/currency";
 
 async function deposit() {
-  const kycVerified = await isAddressKYCVerified({
-    address: "0x0Ca0b83FD81D726f52C266bB617a14a4Ec80214A",
-  });
-  console.log("✓ KYC verified:", kycVerified);
-  // const exchangeRates = await getSupportedAssetsExchangeRates();
-  // console.log("✓ Exchange rates:", exchangeRates);
-  // const fiatTransactionDetails = await getFiatTransactionByTxid({
-  //   txid: "0101768404",
-  //   admin: "",
-  //   adminpwd: "",
+  const username = "demoUser" + Math.floor(Math.random() * 10000);
+  const password = "SuperSecretPassword123!";
+  let address: string;
+
+  const isAvailable = await isTNSAvailable({ username });
+  console.log(`✓ TNS name "${username}" is available:`, isAvailable);
+
+  if (!isAvailable) {
+    console.log(" TNS name not available, skipping wallet creation");
+    return;
+  }
+  address = await createWallet({ username, password });
+  console.log("Wallet address:", address);
+  // const kycVerified = await isAddressKYCVerified({
+  //   address: "0x0Ca0b83FD81D726f52C266bB617a14a4Ec80214A",
   // });
-  // console.log("✓ Fiat transaction details:", fiatTransactionDetails);
-  // if (
-  //   fiatTransactionDetails?.data &&
-  //   Array.isArray(fiatTransactionDetails.data) &&
-  //   fiatTransactionDetails.data.length > 0
-  // ) {
-  //   const txHash = fiatTransactionDetails.data[0].TX_ChainTXID;
-  //   console.log("✓ TX hash:", txHash);
-  // } else {
-  //   console.error("No transaction data found or invalid response structure");
-  // }
+  // console.log("✓ KYC verified:", kycVerified);
+  // // const exchangeRates = await getSupportedAssetsExchangeRates();
+  // // console.log("✓ Exchange rates:", exchangeRates);
+  // // const fiatTransactionDetails = await getFiatTransactionByTxid({
+  // //   txid: "0101768404",
+  // //   admin: "",
+  // //   adminpwd: "",
+  // // });
+  // // console.log("✓ Fiat transaction details:", fiatTransactionDetails);
+  // // if (
+  // //   fiatTransactionDetails?.data &&
+  // //   Array.isArray(fiatTransactionDetails.data) &&
+  // //   fiatTransactionDetails.data.length > 0
+  // // ) {
+  // //   const txHash = fiatTransactionDetails.data[0].TX_ChainTXID;
+  // //   console.log("✓ TX hash:", txHash);
+  // // } else {
+  // //   console.error("No transaction data found or invalid response structure");
+  // // }
 
   // const depositDetails = await depositFunds(
   //   {
@@ -43,7 +58,7 @@ async function deposit() {
   //   {
   //     commissionrate: "0.05",
   //     exchange: "72",
-  //   }
+  //   },
   // );
   // console.log("✓ Deposit initialized:", depositDetails);
 
