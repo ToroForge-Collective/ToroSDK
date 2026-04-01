@@ -42,7 +42,7 @@ export const transferCurrency = async ({
   amount: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/cl`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/cl`;
   const data = {
     op: "transfer",
     params: [
@@ -79,7 +79,7 @@ export const getCurrencyBalance = async ({
   address: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}`;
+  const url = `${getBaseURL()}/currency/${currencyPath}`;
   const data = {
     op: "getbalance",
     params: [{ name: "addr", value: address }],
@@ -115,7 +115,7 @@ export const allowTransfer = async ({
   password: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ow`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ow`;
   const data = {
     op: "allowtransfer",
     params: [
@@ -146,7 +146,7 @@ export const disallowTransfer = async ({
   password: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ow`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ow`;
   const data = {
     op: "disallowtransfer",
     params: [
@@ -177,7 +177,7 @@ export const allowMint = async ({
   password: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ow`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ow`;
   const data = {
     op: "allowmint",
     params: [
@@ -208,7 +208,7 @@ export const disallowMint = async ({
   password: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ow`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ow`;
   const data = {
     op: "disallowmint",
     params: [
@@ -239,7 +239,7 @@ export const allowBurn = async ({
   password: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ow`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ow`;
   const data = {
     op: "allowburn",
     params: [
@@ -270,7 +270,7 @@ export const disallowBurn = async ({
   password: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ow`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ow`;
   const data = {
     op: "disallowburn",
     params: [
@@ -308,7 +308,7 @@ export const freezeAddress = async ({
   targetAddress: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "freeze",
     params: [{ name: "addr", value: targetAddress }],
@@ -347,7 +347,7 @@ export const unfreezeAddress = async ({
   targetAddress: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "unfreeze",
     params: [{ name: "addr", value: targetAddress }],
@@ -386,7 +386,7 @@ export const enrollAddress = async ({
   targetAddress: string;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "enroll",
     params: [{ name: "addr", value: targetAddress }],
@@ -427,7 +427,7 @@ export const mintCurrency = async ({
   amount: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "mint",
     params: [
@@ -471,7 +471,7 @@ export const burnCurrency = async ({
   amount: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "burn",
     params: [
@@ -517,7 +517,7 @@ export const setAllowance = async ({
   max: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "setallowance",
     params: [
@@ -562,7 +562,7 @@ export const setMinimumAllowance = async ({
   value: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "setminimumallowance",
     params: [
@@ -606,7 +606,7 @@ export const setMaximumAllowance = async ({
   value: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "setmaximumallowance",
     params: [
@@ -648,7 +648,7 @@ export const setTransactionFeeFixed = async ({
   value: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "settransactionfeefixed",
     params: [{ name: "val", value: value.toString() }],
@@ -687,7 +687,7 @@ export const setTransactionFeePercentage = async ({
   value: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "settransactionfeepercentage",
     params: [{ name: "val", value: value.toString() }],
@@ -728,7 +728,7 @@ export const setTransactionFee = async ({
   percentage: string | number;
 }) => {
   const currencyPath = getCurrencyPath(currency);
-  const url = `${getBaseURL()}/api/currency/${currencyPath}/ad`;
+  const url = `${getBaseURL()}/currency/${currencyPath}/ad`;
   const data = {
     op: "settransactionfee",
     params: [
