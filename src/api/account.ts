@@ -5,7 +5,7 @@ import { CreateKeystoreInput, SetNameInput } from "../types/api";
 const createKeystore = async ({
   password,
 }: CreateKeystoreInput): Promise<string> => {
-  const url = `${getBaseURL()}/api/keystore`;
+  const url = `${getBaseURL()}/keystore`;
   const data = {
     op: "createkey",
     params: [{ name: "pwd", value: password }],
@@ -17,7 +17,7 @@ const createKeystore = async ({
 
 
 const isNameUsed = async (name: string): Promise<boolean> => {
-  const url = `${getBaseURL()}/api/tns`;
+  const url = `${getBaseURL()}/tns`;
   const data = {
     op: "isnameused",
     params: [{ name: "name", value: name }],
@@ -36,7 +36,7 @@ const isNameUsed = async (name: string): Promise<boolean> => {
 };
 
 const setName = async ({ address, password, username }: SetNameInput) => {
-  const url = `${getBaseURL()}/api/tns/cl`;
+  const url = `${getBaseURL()}/tns/cl`;
   const data = {
     op: "setname",
     params: [
