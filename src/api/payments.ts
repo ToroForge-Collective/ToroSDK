@@ -4,6 +4,8 @@ import { InitializeDepositInput, PaymentExtrasInput } from "../types/api";
 import { KYCParams } from "../types/params";
 import { Currency } from "../types/currency";
 
+
+// wl
 const initializeDeposit = async (
   {
     usrAddr,
@@ -15,7 +17,8 @@ const initializeDeposit = async (
   }: InitializeDepositInput,
   extraData?: PaymentExtrasInput
 ) => {
-  const url = `${getBaseURL()}/api/payment/toro/`;
+  const url = `${getBaseURL()}/payment/toro/`;
+  console.log("-------Initialize Deposit URL:", url);
   const data = {
     op: "paymentinitialize",
     params: [
@@ -63,7 +66,7 @@ const initializeDeposit = async (
 
 // Verify Deposit - Confirms user has completed the transfer
 const verifyDeposit = async (currency: string, txid: string) => {
-  const url = `${getBaseURL()}/api/payment/toro/`;
+  const url = `${getBaseURL()}/payment/toro/`;
   const data = {
     op: "recordfiattransaction",
     params: [
@@ -96,7 +99,7 @@ const setupKYC = async ({
   adminpwd,
 }: KYCParams) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
 
     const config = {
       headers: {
@@ -170,7 +173,7 @@ const makeInterWalletTransfer = async (
     "ZAR": "ZAR",
   };
   const currencyValue = currencyConfig[currencyName];
-  const url = `${getBaseURL()}/api/currency/${currencyValue}/cl`;
+  const url = `${getBaseURL()}/currency/${currencyValue}/cl`;
   const data = {
     op: "transfer",
     params: [
@@ -201,7 +204,7 @@ export const getBankListUSD = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const data = {
       op: "getbanklist_usd",
       params: [],
@@ -233,7 +236,7 @@ export const getBankListNGN = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const data = {
       op: "getbanklist_ngn",
       params: [],
@@ -267,7 +270,7 @@ export const getFiatTransactionByTxid = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/`;
+    const url = `${getBaseURL()}/payment/`;
     const data = {
       op: "getfiattransactions_txid",
       params: [{ name: "txid", value: txid }],
@@ -301,7 +304,7 @@ export const getFiatWithdrawalByTxid = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const data = {
       op: "getfiatwithdrawals_txid",
       params: [{ name: "txid", value: txid }],
@@ -379,7 +382,7 @@ export const recordFiatWithdrawal = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const params: Array<{ name: string; value: string }> = [
       { name: "addr", value: address },
       { name: "pwd", value: password },
@@ -443,7 +446,7 @@ export const verifyBankAccountNameNGN = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const data = {
       op: "verifybankaccountname_ngn",
       params: [
@@ -481,7 +484,7 @@ export const getPendingTransaction = async ({
 }) => {
   try {
     // Note: This endpoint uses toronet.connectw.com according to Postman collection
-    const url = `https://toronet.connectw.com/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const data = {
       op: "getpendingtransaction",
       params: [{ name: "txid", value: txid }],
@@ -523,7 +526,7 @@ export const getFiatTransactionsAddressRange = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const params: Array<{ name: string; value: string }> = [
       { name: "addr", value: address },
       { name: "startdate", value: startDate },
@@ -573,7 +576,7 @@ export const getFiatWithdrawalsAddressRange = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const params: Array<{ name: string; value: string }> = [
       { name: "addr", value: address },
       { name: "startdate", value: startDate },
@@ -621,7 +624,7 @@ export const getFiatTransactionsRecorderRange = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const params: Array<{ name: string; value: string }> = [
       { name: "addr", value: address },
       { name: "startdate", value: startDate },
@@ -670,7 +673,7 @@ export const getFiatWithdrawalsRecorderRange = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/payment/toro/`;
+    const url = `${getBaseURL()}/payment/toro/`;
     const params: Array<{ name: string; value: string }> = [
       { name: "addr", value: address },
       { name: "startdate", value: startDate },
