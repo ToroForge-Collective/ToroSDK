@@ -7,7 +7,7 @@ import { getBaseURL } from "./config";
  */
 export const isStorageOn = async () => {
   try {
-    const url = `${getBaseURL()}/api/storage`;
+    const url = `${getBaseURL()}/storage`;
     const data = {
       op: "isstorageon",
       params: [],
@@ -35,7 +35,7 @@ export const isContractRegistered = async ({
   contract: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage`;
+    const url = `${getBaseURL()}/storage`;
     const data = {
       op: "iscontractregistered",
       params: [{ name: "contract", value: contract }],
@@ -59,7 +59,7 @@ export const isContractRegistered = async ({
  */
 export const getStorageVersion = async () => {
   try {
-    const url = `${getBaseURL()}/api/storage`;
+    const url = `${getBaseURL()}/storage`;
     const data = {
       op: "getstorageversion",
       params: [],
@@ -83,7 +83,7 @@ export const getStorageVersion = async () => {
  */
 export const isOwner = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/storage`;
+    const url = `${getBaseURL()}/storage`;
     const data = {
       op: "isowner",
       params: [{ name: "addr", value: address }],
@@ -107,7 +107,7 @@ export const isOwner = async ({ address }: { address: string }) => {
  */
 export const getOwner = async () => {
   try {
-    const url = `${getBaseURL()}/api/storage`;
+    const url = `${getBaseURL()}/storage`;
     const data = {
       op: "getowner",
       params: [],
@@ -137,7 +137,7 @@ export const setStorageOn = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "setstorageon",
       params: [
@@ -165,7 +165,7 @@ export const setStorageOff = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "setstorageoff",
       params: [
@@ -195,7 +195,7 @@ export const registerContract = async ({
   contract: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "registercontract",
       params: [
@@ -226,7 +226,7 @@ export const unregisterContract = async ({
   contract: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "unregistercontract",
       params: [
@@ -255,7 +255,7 @@ export const increaseStorageVersion = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "increasestorageversion",
       params: [
@@ -283,7 +283,7 @@ export const decreaseStorageVersion = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "decreasestorageversion",
       params: [
@@ -313,7 +313,7 @@ export const setStorageVersion = async ({
   version: string | number;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "setstorageversion",
       params: [
@@ -344,7 +344,7 @@ export const transferOwnership = async ({
   newOwner: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/storage/ow`;
+    const url = `${getBaseURL()}/storage/ow`;
     const data = {
       op: "transferownership",
       params: [
