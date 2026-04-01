@@ -7,7 +7,7 @@ import { getBaseURL } from "./config";
  */
 export const getName = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/tns`;
+    const url = `${getBaseURL()}/tns`;
     const data = {
       op: "getname",
       params: [{ name: "addr", value: address }],
@@ -31,7 +31,7 @@ export const getName = async ({ address }: { address: string }) => {
  */
 export const getAddr = async ({ name }: { name: string }) => {
   try {
-    const url = `${getBaseURL()}/api/tns`;
+    const url = `${getBaseURL()}/tns`;
     const data = {
       op: "getaddr",
       params: [{ name: "name", value: name }],
@@ -55,7 +55,7 @@ export const getAddr = async ({ name }: { name: string }) => {
  */
 export const isAddrAssigned = async ({ address }: { address: string }) => {
   try {
-    const url = `${getBaseURL()}/api/tns`;
+    const url = `${getBaseURL()}/tns`;
     const data = {
       op: "isaddrassigned",
       params: [{ name: "addr", value: address }],
@@ -79,7 +79,7 @@ export const isAddrAssigned = async ({ address }: { address: string }) => {
  */
 export const isSetOn = async () => {
   try {
-    const url = `${getBaseURL()}/api/tns`;
+    const url = `${getBaseURL()}/tns`;
     const data = {
       op: "isseton",
       params: [],
@@ -103,7 +103,7 @@ export const isSetOn = async () => {
  */
 export const isUpdateOn = async () => {
   try {
-    const url = `${getBaseURL()}/api/tns`;
+    const url = `${getBaseURL()}/tns`;
     const data = {
       op: "isupdateon",
       params: [],
@@ -127,7 +127,7 @@ export const isUpdateOn = async () => {
  */
 export const isDeleteOn = async () => {
   try {
-    const url = `${getBaseURL()}/api/tns`;
+    const url = `${getBaseURL()}/tns`;
     const data = {
       op: "isdeleteon",
       params: [],
@@ -157,7 +157,7 @@ export const initTNS = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/ow`;
+    const url = `${getBaseURL()}/tns/ow`;
     const data = {
       op: "inittns",
       params: [
@@ -185,7 +185,7 @@ export const setSetNameOn = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/sa`;
+    const url = `${getBaseURL()}/tns/sa`;
     const data = {
       op: "setsetnameon",
       params: [
@@ -213,7 +213,7 @@ export const setSetNameOff = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/sa`;
+    const url = `${getBaseURL()}/tns/sa`;
     const data = {
       op: "setsetnameoff",
       params: [
@@ -241,7 +241,7 @@ export const setUpdateNameOn = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/sa`;
+    const url = `${getBaseURL()}/tns/sa`;
     const data = {
       op: "setupdatenameon",
       params: [
@@ -269,7 +269,7 @@ export const setUpdateNameOff = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/sa`;
+    const url = `${getBaseURL()}/tns/sa`;
     const data = {
       op: "setupdatenameoff",
       params: [
@@ -297,7 +297,7 @@ export const setDeleteNameOn = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/sa`;
+    const url = `${getBaseURL()}/tns/sa`;
     const data = {
       op: "setdeletenameon",
       params: [
@@ -325,7 +325,7 @@ export const setDeleteNameOff = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/sa`;
+    const url = `${getBaseURL()}/tns/sa`;
     const data = {
       op: "setdeletenameoff",
       params: [
@@ -355,7 +355,7 @@ export const updateName = async ({
   username: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/cl`;
+    const url = `${getBaseURL()}/tns/cl`;
     const data = {
       op: "updatename",
       params: [
@@ -384,7 +384,7 @@ export const deleteName = async ({
   password: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/cl`;
+    const url = `${getBaseURL()}/tns/cl`;
     const data = {
       op: "deletename",
       params: [
@@ -416,7 +416,7 @@ export const adminSetName = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/ad`;
+    const url = `${getBaseURL()}/tns/ad`;
     const data = {
       op: "adminsetname",
       params: [
@@ -455,7 +455,7 @@ export const adminUpdateName = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/ad`;
+    const url = `${getBaseURL()}/tns/ad`;
     const data = {
       op: "adminupdatename",
       params: [
@@ -492,7 +492,7 @@ export const adminDeleteName = async ({
   adminpwd: string;
 }) => {
   try {
-    const url = `${getBaseURL()}/api/tns/ad`;
+    const url = `${getBaseURL()}/tns/ad`;
     const data = {
       op: "admindeletename",
       params: [{ name: "client", value: address }],
