@@ -92,6 +92,12 @@ The Toronet SDK is a TypeScript-based toolkit for interacting with the Toronet b
   - Get bridge fee estimates.
   - Solana-specific operations (address creation, validation, SPL token transfers).
 
+- **Smart Contract Deployment (ToroForge)**
+  - Deploy compiled Solidity contracts to Toronet testnet or mainnet.
+  - Supports constructor arguments and custom owner addresses.
+  - Network auto-selection from SDK config with per-call override.
+  - Mainnet deployments secured via token-based authorization.
+
 ---
 
 ## Installation
@@ -991,6 +997,47 @@ For more detailed bridge examples, see [CODE_SAMPLES.md](CODE_SAMPLES.md#multi-c
 
 ---
 
+### 🚀 Smart Contract Deployment (ToroForge)
+
+Deploy compiled Solidity contracts to Toronet using the ToroForge deployer. See the full [Deployer Guide](DEPLOYER_GUIDE.md) for details.
+
+```typescript
+import { initializeSDK, deploySmartContract } from "torosdk";
+
+// Configure for testnet
+initializeSDK({ network: 'testnet' });
+
+// Deploy a contract
+const result = await deploySmartContract({
+  owner: "",  // Empty string lets the server assign the owner
+  constructorArgs: [
+    "0x0dCDCeF127786cC71EF6658f24E7268Fe349cCB8",
+    "0x0dCDCeF127786cC71EF6658f24E7268Fe349cCB8"
+  ],
+  abi: [/* your contract ABI */],
+  bytecode: "0x608060...",
+});
+
+console.log("Contract deployed at:", result.address);
+console.log("ABI with signatures:", result.abi);
+```
+
+**Mainnet deployments** require a `token` from the Toronet team:
+
+```typescript
+initializeSDK({ network: 'mainnet' });
+
+const result = await deploySmartContract({
+  owner: "0xYourAddress",
+  constructorArgs: [],
+  abi: [/* ... */],
+  bytecode: "0x608060...",
+  token: "your-mainnet-deploy-token",
+});
+```
+
+---
+
 ## Supported Currencies
 
 ```typescript
@@ -1034,6 +1081,7 @@ src/
 │   ├── balanceService.ts   
 │   ├── paymentService.ts   
 │   ├── bridge_service.ts   # Bridge service wrappers
+│   ├── deployer_service.ts # Smart contract deployment
 │   └── utils.ts            
 │
 ├── virtualwallet/          # Virtual wallet business logic
