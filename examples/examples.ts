@@ -56,7 +56,7 @@ import {
   getBlockchainTransactions,
   getAddressRole,
   getBlockById,
-  getTransactionById,
+  getTransactionByHash,
   getTransactionReceiptById,
   getEventById,
   getAddressTransactions,
@@ -559,7 +559,7 @@ async function main() {
     console.log("✓ Block by ID retrieved");
 
     // Get transaction by ID
-    // const txById = await getTransactionById({ id: txHash });
+    // const txById = await getTransactionByHash(txHash);
     // console.log("✓ Transaction by ID retrieved");
 
     // Get transaction receipt by ID
