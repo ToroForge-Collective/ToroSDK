@@ -143,12 +143,12 @@ export const getBlock = async ({ id }: { id: string }) => {
   }
 };
 
-export const getTransactionById = async ({ id }: { id: string }) => {
+export const getTransactionByHash = async ({ hash }: { hash: string }) => {
   try {
     const url = `${getBaseURL()}/query/`;
     const data = {
       op: "gettransaction",
-      params: [{ name: "id", value: id }],
+      params: [{ name: "hash", value: hash }],
     };
     const config = {
       method: "get",
