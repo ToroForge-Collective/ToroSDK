@@ -35,6 +35,7 @@ export const verifyKey = async ({
   password: string;
 }): Promise<Boolean> => {
   const url = `${getBaseURL()}/keystore/`;
+  console.log(`url: ${url}, address: ${address}, password: ${password}`);
   const data = {
     op: "verifykey",
     params: [
@@ -43,8 +44,20 @@ export const verifyKey = async ({
     ],
   };
 
+  const config = {
+    method: "get",
+    url: url,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
+
+  console.log("Request data for verifyKey:", data);
+
   try {
-    const response = await axios.post(url, data);
+    const response = await axios(config);
+    console.log("Response from verifyKey:", response.data);
     if (!response.data.result) throw new Error(response.data.error);
     return response.data.result;
   } catch (error: any) {
