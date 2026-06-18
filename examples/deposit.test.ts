@@ -2,27 +2,43 @@ import {
   confirmDeposit,
   createWallet,
   depositFunds,
+  getAddr,
   getFiatTransactionByTxid,
+  getRevertReason,
   getSupportedAssetsExchangeRates,
+  getTransactionByHash,
+  initializeSDK,
   isAddressKYCVerified,
   isTNSAvailable,
+  verifyWalletPassword,
 } from "../src";
 import { Currency } from "../src/types/currency";
 
 async function deposit() {
-  const username = "demoUser" + Math.floor(Math.random() * 10000);
-  const password = "SuperSecretPassword123!";
-  let address: string;
+  // const username = "demoUser" + Math.floor(Math.random() * 10000);
+  // const password = "SuperSecretPassword123!";
+  // let address: string;
 
-  const isAvailable = await isTNSAvailable({ username });
-  console.log(`✓ TNS name "${username}" is available:`, isAvailable);
+initializeSDK({ network: 'mainnet' });
 
-  if (!isAvailable) {
-    console.log(" TNS name not available, skipping wallet creation");
-    return;
-  }
-  address = await createWallet({ username, password });
-  console.log("Wallet address:", address);
+const txRevertReason = await getRevertReason("0xa37e81bfacbfdd10e2767c33521c7444a4de9f3e2ebabfffdca4e47b2d653eea");
+console.log("✓ Transaction revert reason:", txRevertReason);
+  // const isAvailable = await isTNSAvailable({ username });
+  // console.log(`✓ TNS name "${username}" is available:`, isAvailable);
+
+  // if (!isAvailable) {
+  //   console.log(" TNS name not available, skipping wallet creation");
+  //   return;
+  // }
+  // const address = "0x15cf4622bfcb990d179aa9536ffd3a6f83de0a8f";
+  // const PASSWORD = "SecureipPass123!";
+
+  // const isValid = await verifyWalletPassword({ address, password: PASSWORD });
+  // console.log("✓ Wallet password valid:", isValid);
+  // address = await createWallet({ username, password });
+  // console.log("Wallet address:", address);
+  // const tnsAddress = await getAddr({ name: "toroaccessadmin" });
+  // console.log("✓ Address for TNS name:", tnsAddress);
   // const kycVerified = await isAddressKYCVerified({
   //   address: "0x0Ca0b83FD81D726f52C266bB617a14a4Ec80214A",
   // });
@@ -52,8 +68,8 @@ async function deposit() {
   //     username: "test21764116127388",
   //     amount: "100",
   //     currency: Currency.Naira,
-  //     admin: "",
-  //     adminpwd: "",
+  //     admin: "0xfa1e3a944f60519c0a6ec856ae5fe23a38e2ba50",
+  //     adminpwd: "@ToroAccess$1",
   //   },
   //   {
   //     commissionrate: "0.05",
