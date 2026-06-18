@@ -54,10 +54,10 @@ export const getTransaction = async (txHash: string) => {
     const url = `${getBaseURL()}/blockchain/`;
     const data = {
       op: "gettransaction",
-      params: [{ name: "id", value: txHash }],
+      params: [{ name: "hash", value: txHash }],
     };
     const config = {
-      method: "post",
+      method: "get",
       url: url,
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export const getReceipt = async (txHash: string) => {
       params: [{ name: "id", value: txHash }],
     };
     const config = {
-      method: "post",
+      method: "get",
       url: url,
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +101,7 @@ export const getRevertReason = async (txHash: string) => {
       params: [{ name: "id", value: txHash }],
     };
     const config = {
-      method: "post",
+      method: "get",
       url: url,
       headers: {
         "Content-Type": "application/json",
