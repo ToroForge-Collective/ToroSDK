@@ -311,7 +311,7 @@ import {
   getAddressRole,
   getAddressBalance,
   getBlockById,
-  getTransactionById,
+  getTransactionByHash,
   getTransactionReceiptById,
   getEventById,
   getAddressTransactions,
@@ -353,7 +353,7 @@ console.log("Latest block:", blockById);
 
 // Get a specific transaction by its hash
 const txHash = "0x1234567890abcdef1234567890abcdef12345678";
-const txById = await getTransactionById({ id: txHash });
+const txById = await getTransactionByHash(txHash);
 console.log("Transaction by ID:", txById);
 
 // Get transaction receipt by transaction hash
