@@ -3,7 +3,7 @@ import {
   getAddrRole,
   getAddrBalance,
   getBlock,
-  getTransactionById as apiGetTransactionById,
+  getTransactionByHash as apiGetTransactionByHash,
   getTransactionReceipt,
   getEvent,
   getAddrTransactions,
@@ -62,7 +62,7 @@ const getBlockchainTransactions = async (count: number) => {
 // Wrappers for each new endpoint
 const getAddressRole = async (address: string) => getAddrRole({ address });
 const getBlockById = async (id: string) => getBlock({ id });
-const getTransactionById = async (id: string) => apiGetTransactionById({ id });
+const getTransactionByHash = async (hash: string) => apiGetTransactionByHash({ hash });
 const getTransactionReceiptById = async (id: string) => getTransactionReceipt({ id });
 const getEventById = async (id: string) => getEvent({ id });
 const getAddressTransactions = async (address: string, count: number) => getAddrTransactions({ address, count });
@@ -94,7 +94,7 @@ export {
   getBlockchainTransactions,
   getAddressRole,
   getBlockById,
-  getTransactionById,
+  getTransactionByHash,
   getTransactionReceiptById,
   getEventById,
   getAddressTransactions,
