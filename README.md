@@ -293,7 +293,7 @@ import {
   getAddressRole,
   getAddressBalance,
   getBlockById,
-  getTransactionById,
+  getTransactionByHash,
   getTransactionReceiptById,
   getEventById,
   getAddressTransactions,
@@ -332,7 +332,7 @@ const addrBalance = await getAddressBalance("0xYourWalletAddress");
 console.log("Address Balance:", addrBalance);
 const blockById = await getBlockById("latest");
 console.log("Block By ID:", blockById);
-const txById = await getTransactionById("0xYourTxHash");
+const txById = await getTransactionByHash("0xYourTxHash");
 console.log("Transaction By ID:", txById);
 const txReceiptById = await getTransactionReceiptById("0xYourTxHash");
 console.log("Transaction Receipt By ID:", txReceiptById);
